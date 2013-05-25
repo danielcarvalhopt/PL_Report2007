@@ -30,7 +30,7 @@ Report: BEGIN_REPORT Title Body END_REPORT  ;
 
 Title: BEGIN_TITLE text END_TITLE { r.title = strdup($2);};
 
-Body: BEGIN_BODY text END_BODY {puts("<body>"); puts("</body>");}
+Body: BEGIN_BODY text END_BODY {r.body = strdup($2);}
     | ;
 
 text: TEXT {$$=$1;};

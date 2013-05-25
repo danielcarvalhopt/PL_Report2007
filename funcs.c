@@ -3,14 +3,13 @@
 
 extern Report r;
 
-void printHTML_title(){
-    puts("<title>");
-    puts(r.title);
-    puts("</title>");
-}
+#define OPEN(X) printf("<"); printf(#X); printf(">");
+#define CLOSE(X) printf("</"); printf(#X); printf(">\n");
+#define PRINT_HTML(X, TAG) OPEN(TAG) printf("%s",r.X); CLOSE(TAG)
 
 void printHTML(){
     puts("<html>");
-    printHTML_title();
+    PRINT_HTML(title, title);
+    PRINT_HTML(body, tag_name);
     puts("</html>");
 }
