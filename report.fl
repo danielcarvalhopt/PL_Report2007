@@ -1,0 +1,27 @@
+
+%option noyywrap
+%{
+#include "y.tab.h"
+#include <string.h>
+
+%}
+
+begin_report "BREPORT"
+end_report "EREPORT"
+begin_body "BBODY"
+end_body "EBODY"
+begin_title "BTITLE"
+end_title "ETITLE"
+newline      \n
+
+%%
+[ \t]+  ;
+.*{begin_report}	{return BEGIN_REPORT;}
+{end_report}	  	{return END_REPORT;}
+{begin_body} 		{return BEGIN_BODY;}
+{end_body} 			{return END_BODY;}
+{begin_title}		{return BEGIN_TITLE;}       
+{end_title}			{return END_TITLE;}
+.*	  				{yylval.str = strdup(yytext); return(TEXT);}
+
+%%
