@@ -12,6 +12,21 @@ begin_body "BBODY"
 end_body "EBODY"
 begin_title "BTITLE"
 end_title "ETITLE"
+begin_frontmatter "BFM"
+end_frontmatter "EFM"
+begin_subtitle "BSUBTITLE"
+end_subtitle "ESUBTITLE"
+begin_date "BDATE"
+end_date "EDATE"
+begin_author "BAUTHOR"
+end_author "EAUTHOR"
+begin_name "BNAME"
+end_name "ENAME"
+begin_number "BNUMBER"
+end_number "ENUMBER"
+begin_mail "BMAIL"
+end_mail "EMAIL"
+
 newline      \n
 
 %%
@@ -22,6 +37,21 @@ newline      \n
 {end_body} 			{return END_BODY;}
 {begin_title}		{return BEGIN_TITLE;}       
 {end_title}			{return END_TITLE;}
+{begin_frontmatter} {return BEGIN_FM;}
+{end_frontmatter}	{return END_FM;}
+{begin_subtitle}	{return BEGIN_SUBTITLE;}       
+{end_subtitle}		{return END_SUBTITLE;}
+{begin_date}		{return BEGIN_DATE;}       
+{end_date}			{return END_DATE;}
+{begin_author}		{return BEGIN_AUTHOR;}       
+{end_author}		{return END_AUTHOR;}
+{begin_name}		{return BEGIN_NAME;}       
+{end_name}			{return END_NAME;}
+{begin_number}		{return BEGIN_NUMBER;}       
+{end_number}		{return END_NUMBER;}
+{begin_mail}		{return BEGIN_MAIL;}       
+{end_mail}			{return END_MAIL;}
+
 .*	  				{yylval.str = strdup(yytext); return(TEXT);}
 
 %%

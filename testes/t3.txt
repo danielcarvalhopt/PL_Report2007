@@ -1,0 +1,27 @@
+BREPORT
+BFM
+BTITLE
+Um relatório em HTML
+ETITLE
+BSUBTITLE
+Vamos aprender HTML
+ESUBTITLE
+BAUTHOR
+BNAME
+Serafim Pinto
+ENAME
+BNUMBER
+61056
+ENUMBER
+BMAIL
+smcp92@gmail.com
+EMAIL
+EAUTHOR
+BDATE
+27 de Janeiro de 2013
+EDATE
+EFM
+BBODY
+O HTML é uma linguagem... Baderous!!!
+EBODY
+EREPORT
