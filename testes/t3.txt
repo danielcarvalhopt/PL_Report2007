@@ -17,6 +17,17 @@ BMAIL
 smcp92@gmail.com
 EMAIL
 EAUTHOR
+BAUTHOR
+BNAME
+asda Pinto
+ENAME
+BNUMBER
+54654
+ENUMBER
+BMAIL
+asda@gmail.com
+EMAIL
+EAUTHOR
 BDATE
 27 de Janeiro de 2013
 EDATE

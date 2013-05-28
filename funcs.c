@@ -11,10 +11,8 @@ void printHTML(){
 	puts("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
 	PRINT_HTML(title,title);
 	puts("</head><body>");
-    printf("<hr><h3><u>Title:</u></h3>");
-    PRINT_HTML(title, h1);
-    printf("<h3><u>Subtitle:</u></h3>");
-    PRINT_HTML(subtitle,h2);
+    printf("<hr><h3><u>Title:</u> ");PRINT_HTML(title, k);printf("</h3>");
+    printf("<h3><u>Subtitle:</u> ");PRINT_HTML(subtitle,k);printf("</h3>");
     printAUTORES();
     printf("<h3><u>Date:</u></h3>");
     PRINT_HTML(date,h3);
@@ -23,18 +21,30 @@ void printHTML(){
     
   
     puts("</body></html>");
-
-
 }
 
 void printAUTORES() {
+	Author *a; 
+	int i;
+	
 	printf("<h3><u>Authors:</u></h3>");
     printf("<table border=\"2\"><tr><td><b>Name</b></td><td><b>Number</b></td><td><b>Email</b></td></tr>");
-    printf("<tr>");
-    PRINT_HTML(author.name,td);
-    PRINT_HTML(author.number,td);
-    PRINT_HTML(author.mail,td);
-    printf("</tr>");
+    for (i = 0; i <r.authors->len ; i++)
+    {
+    	a = &g_array_index(r.authors,Author,i);
+    	printf("<tr>");
+    	printf("<td>%s</td>",a->name);
+    	printf("<td>%s</td>",a->number);
+    	printf("<td>%s</td>",a->mail);
+    	printf("</tr>");
+	}
     printf("</table>");
+
 }
 
+
+void initReport() {
+	
+	r.authors = g_array_new(FALSE,FALSE,sizeof(Author));
+
+}

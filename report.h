@@ -1,3 +1,5 @@
+#include <glib.h>
+
 typedef struct sAuthor
 {
 	char* name;
@@ -11,10 +13,32 @@ typedef struct sReport
 	char* date;
 	char* body;
 	char* subtitle;
-	Author author;
+	GArray* authors;
 } Report;
 
+typedef struct sChapter
+{
+	char* title;
+	GArray* elems;
+};
+
+typedef struct sParagraph
+{
+	char* text;
+} Paragraph;
+
+typedef struct sFloat
+{
+	char* text;	
+} Float;
+
+typedef union uElms
+{
+	Paragraph* paragraph;
+	Float* fl;
+} Elms;
 
 
 void printHTML();
 void printAUTORES();
+void initReport();

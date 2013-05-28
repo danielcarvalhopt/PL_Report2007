@@ -4,6 +4,7 @@
 #include <string.h>
 
 Report r;
+Author a;
 int yyerror(char *s);
 extern FILE* yyin;
 extern FILE* yyout;
@@ -50,17 +51,17 @@ Title: BEGIN_TITLE text END_TITLE { r.title = strdup($2);};
 
 Subtitle: BEGIN_SUBTITLE text END_SUBTITLE { r.subtitle = strdup($2);};
 
-Author: BEGIN_AUTHOR Name Number Mail END_AUTHOR ;
+Author: BEGIN_AUTHOR Name Number Mail END_AUTHOR 	{g_array_append_val(r.authors,a);};
 
 Authors: Author 
 	| Authors Author ;
 
-Name: BEGIN_NAME text END_NAME { r.author.name = strdup($2);};
+Name: BEGIN_NAME text END_NAME { a.name = strdup($2);};
 
-Number: BEGIN_NUMBER text END_NUMBER { r.author.number = strdup($2);} 
+Number: BEGIN_NUMBER text END_NUMBER { a.number = strdup($2);} 
 	| ;	
 
-Mail: BEGIN_MAIL text END_MAIL { r.author.mail = strdup($2);} 
+Mail: BEGIN_MAIL text END_MAIL { a.mail = strdup($2);} 
 	|;
 
 
@@ -77,10 +78,19 @@ text: TEXT {$$=$1;};
 int yyerror(char *s){fprintf(stderr,"%s\n",s);}
 
 int main(int argc, char *argv[]){ 
-    if(argc > 1) yyin = fopen(argv[1],"r");
-    else perror("Insira pelo menos o path para um ficheiro a ser convertido\n");
-    yyout = fopen("report.html","w+");
-    yyparse();
-    printHTML();
-    fclose(yyin);
+    if(argc > 1) {
+    	yyin = fopen(argv[1],"r");
+    	yyout = fopen("report.html","w+");
+    	initReport();
+    	yyparse();
+    	printHTML();
+    	fclose(yyin);
+    }
+    else {
+    	initReport();
+    	yyparse();
+    	printHTML();
+    	perror("Insira pelo menos o path para um ficheiro a ser convertido\n");
+   	}
+   return 0;
 }

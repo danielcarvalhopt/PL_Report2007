@@ -30,7 +30,7 @@ end_mail "EMAIL"
 newline      \n
 
 %%
-[ \t]+  ;
+[ \t\n]+  ;
 .*{begin_report}	{return BEGIN_REPORT;}
 {end_report}	  	{return END_REPORT;}
 {begin_body} 		{return BEGIN_BODY;}
@@ -52,6 +52,6 @@ newline      \n
 {begin_mail}		{return BEGIN_MAIL;}       
 {end_mail}			{return END_MAIL;}
 
-.*	  				{yylval.str = strdup(yytext); return(TEXT);}
+[^\n \t].*	  		{yylval.str = strdup(yytext); return(TEXT);}
 
 %%
