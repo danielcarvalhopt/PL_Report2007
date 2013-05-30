@@ -18,12 +18,10 @@ extern FILE* yyout;
 
 %token BEGIN_REPORT
 %token END_REPORT
-%token BEGIN_BODY
-%token END_BODY
-%token BEGIN_TITLE
-%token END_TITLE
 %token BEGIN_FM
 %token END_FM
+%token BEGIN_TITLE
+%token END_TITLE
 %token BEGIN_SUBTITLE
 %token END_SUBTITLE
 %token BEGIN_DATE
@@ -36,6 +34,17 @@ extern FILE* yyout;
 %token END_NUMBER
 %token BEGIN_MAIL
 %token END_MAIL
+%token BEGIN_ABS
+%token END_ABS
+%token BEGIN_AKN
+%token END_AKN
+
+%token BEGIN_BODY
+%token END_BODY
+%token BEGIN_CHAP
+%token END_CHAP
+%token BEGIN_PARA
+%token END_PARA
 
 %token <str> TEXT
 %type <str> text
@@ -44,32 +53,36 @@ extern FILE* yyout;
 
 Report: BEGIN_REPORT FrontMatter Body END_REPORT ;
 
-FrontMatter: BEGIN_FM Title Subtitle Authors Date END_FM
+FrontMatter: BEGIN_FM Title Subtitle Authors Date Abstract Aknow END_FM
 	| ;
-
-Title: BEGIN_TITLE text END_TITLE { r.title = strdup($2);};
-
-Subtitle: BEGIN_SUBTITLE text END_SUBTITLE { r.subtitle = strdup($2);};
-
-Author: BEGIN_AUTHOR Name Number Mail END_AUTHOR 	{g_array_append_val(r.authors,a);};
-
+Title: BEGIN_TITLE text END_TITLE   { r.frontmatter.title = strdup($2);};
+Subtitle: BEGIN_SUBTITLE text END_SUBTITLE      { r.frontmatter.subtitle = strdup($2);};
+Author: BEGIN_AUTHOR Name Number Mail END_AUTHOR    {g_array_append_val(r.frontmatter.authors,a);};
 Authors: Author 
 	| Authors Author ;
-
-Name: BEGIN_NAME text END_NAME { a.name = strdup($2);};
-
-Number: BEGIN_NUMBER text END_NUMBER { a.number = strdup($2);} 
+Name: BEGIN_NAME text END_NAME  { a.name = strdup($2);};
+Number: BEGIN_NUMBER text END_NUMBER    { a.number = strdup($2);} 
 	| ;	
-
-Mail: BEGIN_MAIL text END_MAIL { a.mail = strdup($2);} 
+Mail: BEGIN_MAIL text END_MAIL  { a.mail = strdup($2);} 
 	|;
+Date: BEGIN_DATE text END_DATE  { r.frontmatter.date = strdup($2);};
 
+Paragraph: BEGIN_PARA text END_PARA ;
 
-Date: BEGIN_DATE text END_DATE { r.date = strdup($2);};
+Paragraphs: Paragraph 
+    | Paragraphs Paragraph;
 
-Body: BEGIN_BODY text END_BODY {r.body = strdup($2);}
+Abstract: BEGIN_ABS Paragraphs END_ABS ;
+
+Aknow: BEGIN_AKN Paragraphs END_AKN
+
+    | ;
+Body: BEGIN_BODY Chapters END_BODY
     | ;
 
+Chapter: BEGIN_CHAP Title END_CHAP ;
+Chapters: Chapter
+    | Chapters Chapter;
 
 text: TEXT {$$=$1;};
 

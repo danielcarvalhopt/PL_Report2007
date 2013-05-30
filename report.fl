@@ -8,12 +8,11 @@
 
 begin_report "BREPORT"
 end_report "EREPORT"
-begin_body "BBODY"
-end_body "EBODY"
-begin_title "BTITLE"
-end_title "ETITLE"
+
 begin_frontmatter "BFM"
 end_frontmatter "EFM"
+begin_title "BTITLE"
+end_title "ETITLE"
 begin_subtitle "BSUBTITLE"
 end_subtitle "ESUBTITLE"
 begin_date "BDATE"
@@ -26,6 +25,19 @@ begin_number "BNUMBER"
 end_number "ENUMBER"
 begin_mail "BMAIL"
 end_mail "EMAIL"
+begin_abstract "BABS"
+end_abstract "EABS"
+begin_aknow "BAKN"
+end_aknow "EAKN"
+
+begin_body "BBODY"
+end_body "EBODY"
+begin_chapter "BCHAP"
+end_chapter "ECHAP"
+begin_paragraph "BPARA"
+end_paragraph "EPARA"
+
+
 
 newline      \n
 
@@ -33,12 +45,11 @@ newline      \n
 [ \t\n]+  ;
 .*{begin_report}	{return BEGIN_REPORT;}
 {end_report}	  	{return END_REPORT;}
-{begin_body} 		{return BEGIN_BODY;}
-{end_body} 			{return END_BODY;}
-{begin_title}		{return BEGIN_TITLE;}       
-{end_title}			{return END_TITLE;}
+
 {begin_frontmatter} {return BEGIN_FM;}
 {end_frontmatter}	{return END_FM;}
+{begin_title}		{return BEGIN_TITLE;}       
+{end_title}			{return END_TITLE;}
 {begin_subtitle}	{return BEGIN_SUBTITLE;}       
 {end_subtitle}		{return END_SUBTITLE;}
 {begin_date}		{return BEGIN_DATE;}       
@@ -51,6 +62,18 @@ newline      \n
 {end_number}		{return END_NUMBER;}
 {begin_mail}		{return BEGIN_MAIL;}       
 {end_mail}			{return END_MAIL;}
+{begin_abstract} 	{return BEGIN_ABS;}
+{end_abstract} 		{return END_ABS;}
+{begin_aknow} 		{return BEGIN_AKN;}
+{end_aknow} 		{return END_AKN;}
+
+{begin_body} 		{return BEGIN_BODY;}
+{end_body} 			{return END_BODY;}
+{begin_chapter} 	{return BEGIN_CHAP;}
+{end_chapter} 		{return END_CHAP;}
+{begin_paragraph} 	{return BEGIN_PARA;}
+{end_paragraph} 	{return END_PARA;}
+
 
 [^\n \t].*	  		{yylval.str = strdup(yytext); return(TEXT);}
 

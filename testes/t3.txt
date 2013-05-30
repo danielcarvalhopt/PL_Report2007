@@ -31,8 +31,22 @@ EAUTHOR
 BDATE
 27 de Janeiro de 2013
 EDATE
+BABS
+BPARA
+Este relatório apenas contêm um...
+EPARA
+EABS
+BAKN
+BPARA
+Queriamos agredecer
+EPARA
+EAKN
 EFM
 BBODY
+BCHAP
+BTITLE
 O HTML é uma linguagem... Baderous!!!
+ETITLE
+ECHAP
 EBODY
 EREPORT
