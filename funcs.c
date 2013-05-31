@@ -8,17 +8,41 @@ extern Report r;
 #define PRINT_HTML(X, TAG) OPEN(TAG) printf("%s",r.X); CLOSE(TAG)
 
 void printHTML() {
-	puts("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
-	PRINT_HTML(frontmatter.title,title);
-	puts("</head><body>");
+    
+    puts("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+    printFrontMatter();
+    puts("</body></html>");
+}
+
+void printParagraph(Paragraph p) {
+    puts(p.texto);
+    puts("\n");
+}
+
+void printFrontMatter() {
+    PRINT_HTML(frontmatter.title,title);
+    puts("</head><body>");
     printf("<hr><h3><u>Title:</u> ");PRINT_HTML(frontmatter.title, k);printf("</h3>");
     printf("<h3><u>Subtitle:</u> ");PRINT_HTML(frontmatter.subtitle,k);printf("</h3>");
     printAUTORES();
     printf("<h3><u>Date:</u></h3>");
-    printDataHtml();
-    printf("<hr><hr>");
-    puts("</body></html>");
+    if (r.frontmatter.date == NULL) 
+        printDataHtml();
+    else 
+        {
+            PRINT_HTML(frontmatter.date,k);
+        }
+    printf("<hr>");
+    printf("<h1>Abstract</h1>");
+    int i;
+    Paragraph *p;
+    for (i = 0; i <r.frontmatter.abstract.paragraphs->len ; i++) {
+        p = &g_array_index(r.frontmatter.abstract.paragraphs,Paragraph,i);
+        printParagraph(*p);
+    }
+    printf("\n");
 }
+
 
 void printAUTORES() {
 	Author *a; 
@@ -35,12 +59,12 @@ void printAUTORES() {
     	printf("</tr>");
 	}
     printf("</table>");
-}
-
+}   
 
 void initReport() {
 	
 	r.frontmatter.authors = g_array_new(FALSE,FALSE,sizeof(Author));
+    r.frontmatter.abstract.paragraphs = g_array_new(FALSE,FALSE,sizeof(Paragraph));
 }
 
 void printDataHtml() {

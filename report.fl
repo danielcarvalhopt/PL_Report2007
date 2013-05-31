@@ -17,6 +17,7 @@ begin_subtitle "BSUBTITLE"
 end_subtitle "ESUBTITLE"
 begin_date "BDATE"
 end_date "EDATE"
+date_today "TODAY"
 begin_author "BAUTHOR"
 end_author "EAUTHOR"
 begin_name "BNAME"
@@ -36,7 +37,21 @@ begin_chapter "BCHAP"
 end_chapter "ECHAP"
 begin_paragraph "BPARA"
 end_paragraph "EPARA"
+begin_figure "BFIG"
+end_figure "EFIG"
+begin_graphic "BGRAPH"
+end_graphic "EGRAPH"
+begin_caption "BCAPTION"
+end_caption "ECAPTION"
+begin_path "BPATH"
+end_path "EPATH"
+begin_format "BFORMAT"
+end_format "EFORMAT"
+begin_size "BSIZE"
+end_size "ESIZE"
 
+begin_table "BTABLE"
+end_table "ETABLE"
 
 
 newline      \n
@@ -54,6 +69,7 @@ newline      \n
 {end_subtitle}		{return END_SUBTITLE;}
 {begin_date}		{return BEGIN_DATE;}       
 {end_date}			{return END_DATE;}
+{date_today}		{return TODAY;}
 {begin_author}		{return BEGIN_AUTHOR;}       
 {end_author}		{return END_AUTHOR;}
 {begin_name}		{return BEGIN_NAME;}       
@@ -73,6 +89,20 @@ newline      \n
 {end_chapter} 		{return END_CHAP;}
 {begin_paragraph} 	{return BEGIN_PARA;}
 {end_paragraph} 	{return END_PARA;}
+{begin_figure} 		{return BEGIN_FIG;}
+{end_figure} 		{return END_FIG;}
+{begin_graphic} 	{return BEGIN_GRAPH;}
+{end_graphic} 		{return END_GRAPH;}
+{begin_caption} 	{return BEGIN_CAPTION;}
+{end_caption} 		{return END_CAPTION;}
+{begin_path} 		{return BEGIN_PATH;}	
+{end_path} 			{return END_PATH;}
+{begin_format}    	{return BEGIN_FORMAT;}
+{end_format} 		{return END_FORMAT;}
+{begin_size} 		{return BEGIN_SIZE;}
+{end_size} 			{return END_SIZE;}
+{begin_table} 		{return BEGIN_TABLE;}
+{end_table} 		{return END_TABLE;}
 
 
 [^\n \t].*	  		{yylval.str = strdup(yytext); return(TEXT);}

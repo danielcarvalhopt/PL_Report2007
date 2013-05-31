@@ -34,13 +34,24 @@ typedef struct sChapter
 
 typedef struct sParagraph
 {
-	char* text;
+	char* texto;
 } Paragraph;
 
-typedef struct sFloat
+typedef struct sFigure
 {
-	char* text;	
-} Float;
+	char* caption;
+	char* path;
+	char* format;
+	float size;
+} Figure;
+
+typedef struct sTable
+{
+	char* caption;
+	int linhas;
+	int colunas;
+	char*** text; 	
+} Table;
 
 typedef struct sSection
 {
@@ -48,12 +59,13 @@ typedef struct sSection
 	GArray* elems;
 } Section;
 
-typedef union uElms
+typedef union uElems
 {
 	Paragraph paragraph;
-	Float fl;
+	Figure fig;
+	Table table;
 	Section section;
-} Elms;
+} Elems;
 
 typedef struct sBody
 {
@@ -72,3 +84,5 @@ void printHTML();
 void printAUTORES();
 void initReport();
 void printDataHtml();
+void printFrontMatter();
+void printParapraph(Paragraph);

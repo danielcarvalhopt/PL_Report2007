@@ -47,25 +47,42 @@
      END_SUBTITLE = 265,
      BEGIN_DATE = 266,
      END_DATE = 267,
-     BEGIN_AUTHOR = 268,
-     END_AUTHOR = 269,
-     BEGIN_NAME = 270,
-     END_NAME = 271,
-     BEGIN_NUMBER = 272,
-     END_NUMBER = 273,
-     BEGIN_MAIL = 274,
-     END_MAIL = 275,
-     BEGIN_ABS = 276,
-     END_ABS = 277,
-     BEGIN_AKN = 278,
-     END_AKN = 279,
-     BEGIN_BODY = 280,
-     END_BODY = 281,
-     BEGIN_CHAP = 282,
-     END_CHAP = 283,
-     BEGIN_PARA = 284,
-     END_PARA = 285,
-     TEXT = 286
+     TODAY = 268,
+     BEGIN_AUTHOR = 269,
+     END_AUTHOR = 270,
+     BEGIN_NAME = 271,
+     END_NAME = 272,
+     BEGIN_NUMBER = 273,
+     END_NUMBER = 274,
+     BEGIN_MAIL = 275,
+     END_MAIL = 276,
+     BEGIN_ABS = 277,
+     END_ABS = 278,
+     BEGIN_AKN = 279,
+     END_AKN = 280,
+     BEGIN_BODY = 281,
+     END_BODY = 282,
+     BEGIN_CHAP = 283,
+     END_CHAP = 284,
+     BEGIN_PARA = 285,
+     END_PARA = 286,
+     BEGIN_ELEM = 287,
+     END_ELEM = 288,
+     BEGIN_FIG = 289,
+     END_FIG = 290,
+     BEGIN_GRAPH = 291,
+     END_GRAPH = 292,
+     BEGIN_CAPTION = 293,
+     END_CAPTION = 294,
+     BEGIN_PATH = 295,
+     END_PATH = 296,
+     BEGIN_FORMAT = 297,
+     END_FORMAT = 298,
+     BEGIN_SIZE = 299,
+     END_SIZE = 300,
+     BEGIN_TABLE = 301,
+     END_TABLE = 302,
+     TEXT = 303
    };
 #endif
 /* Tokens.  */
@@ -79,25 +96,42 @@
 #define END_SUBTITLE 265
 #define BEGIN_DATE 266
 #define END_DATE 267
-#define BEGIN_AUTHOR 268
-#define END_AUTHOR 269
-#define BEGIN_NAME 270
-#define END_NAME 271
-#define BEGIN_NUMBER 272
-#define END_NUMBER 273
-#define BEGIN_MAIL 274
-#define END_MAIL 275
-#define BEGIN_ABS 276
-#define END_ABS 277
-#define BEGIN_AKN 278
-#define END_AKN 279
-#define BEGIN_BODY 280
-#define END_BODY 281
-#define BEGIN_CHAP 282
-#define END_CHAP 283
-#define BEGIN_PARA 284
-#define END_PARA 285
-#define TEXT 286
+#define TODAY 268
+#define BEGIN_AUTHOR 269
+#define END_AUTHOR 270
+#define BEGIN_NAME 271
+#define END_NAME 272
+#define BEGIN_NUMBER 273
+#define END_NUMBER 274
+#define BEGIN_MAIL 275
+#define END_MAIL 276
+#define BEGIN_ABS 277
+#define END_ABS 278
+#define BEGIN_AKN 279
+#define END_AKN 280
+#define BEGIN_BODY 281
+#define END_BODY 282
+#define BEGIN_CHAP 283
+#define END_CHAP 284
+#define BEGIN_PARA 285
+#define END_PARA 286
+#define BEGIN_ELEM 287
+#define END_ELEM 288
+#define BEGIN_FIG 289
+#define END_FIG 290
+#define BEGIN_GRAPH 291
+#define END_GRAPH 292
+#define BEGIN_CAPTION 293
+#define END_CAPTION 294
+#define BEGIN_PATH 295
+#define END_PATH 296
+#define BEGIN_FORMAT 297
+#define END_FORMAT 298
+#define BEGIN_SIZE 299
+#define END_SIZE 300
+#define BEGIN_TABLE 301
+#define END_TABLE 302
+#define TEXT 303
 
 
 
@@ -107,14 +141,14 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 15 "report.y"
+#line 19 "report.y"
 
     char *str;
 
 
 
 /* Line 2068 of yacc.c  */
-#line 118 "y.tab.h"
+#line 152 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
