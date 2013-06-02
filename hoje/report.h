@@ -100,7 +100,13 @@ typedef union uElems
 	Section section;
 	char* codeblock;
 	char* summary;
-} Elem;
+} ElemU;
+
+typedef struct sElem
+{
+	ElemU e;
+	int id;
+}Elem;
 
 typedef struct sFootnote{
 	char* text;
@@ -146,7 +152,14 @@ typedef union uParagraphElem
 	Underline underline;
 	InlineCode inlineCode;
 	Acronym acronym;
-} Paragraph_Elem;
+	int id;
+} Paragraph_ElemU;
+
+typedef struct sParagraphElem
+{
+	Paragraph_ElemU e;
+	int id;
+}Paragraph_Elem;
 
 typedef union uElemsSec
 {
@@ -156,7 +169,14 @@ typedef union uElemsSec
 	List list;
 	char* codeblock;
 	char* summary;
-} SecElem;
+	int id;
+} SecElemU;
+
+typedef struct sElemsSec
+{
+	SecElemU e;
+	int id;
+}SecElem;
 
 typedef struct sBackMatter
 {
