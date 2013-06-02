@@ -147,7 +147,7 @@ Abstract: BEGIN_ABS Paragraphs END_ABS { g_array_append_val(r.frontmatter.abstra
 Aknow: BEGIN_AKN Paragraphs END_AKN 
     | ;
 
-Paragraph: BEGIN_PARA text END_PARA { p.texto = strdup($2); } 
+Paragraph: BEGIN_PARA text END_PARA { } 
 
 Paragraphs: Paragraph 
     | Paragraphs Paragraph ;
@@ -199,13 +199,13 @@ int main(int argc, char *argv[]){
     	yyout = fopen("report.html","w+");
     	initReport();
     	yyparse();
-    	printHTML();
+    	printREPORT(yyout);
     	fclose(yyin);
     }
     else {
     	initReport();
     	yyparse();
-    	printHTML();
+    	printREPORT(yyout);
     	perror("Insira pelo menos o path para um ficheiro a ser convertido\n");
    	}
    return 0;
