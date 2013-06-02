@@ -1,27 +1,6 @@
 #include <glib.h>
 
 /**/
-typedef struct sParagraph
-{
-	GArray* prg_elem;
-} Paragraph;
-
-typedef struct sFrontMatter {
-	char* title;
-	char* subtitle;
-	GArray* authors;	
-	char* date;
-	char* institution
-	GArray* keywords;	
-	Abstract abstract;
-	Aknowls aknow;
-	int index;
-	int figures_index;
-	int tables_index;
-} FrontMatter;
-/**/
-
-
 
 typedef struct sAbstract
 {
@@ -32,6 +11,26 @@ typedef struct sAknowledgements
 {
 	GArray* paragraphs;
 } Aknowls;
+
+typedef struct sParagraph
+{
+	GArray* prg_elem;
+} Paragraph;
+
+typedef struct sFrontMatter {
+	char* title;
+	char* subtitle;
+	GArray* authors;	
+	char* date;
+	char* institution;
+	GArray* keywords;	
+	Abstract abstract;
+	Aknowls aknow;
+	int index;
+	int figures_index;
+	int tables_index;
+} FrontMatter;
+/**/
 
 typedef struct sAuthor
 {
