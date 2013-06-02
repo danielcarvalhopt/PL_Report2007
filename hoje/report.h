@@ -1,5 +1,5 @@
 #include <glib.h>
-
+#include <stdio.h>
 /**/
 
 #define FIGURE 1
@@ -225,6 +225,30 @@ List initList(List s);
 /*Printing procedures*/
 void printHTML();
 void printAUTORES();
-void printDataHtml();
-void printFrontMatter();
-void printParapraph(Paragraph);
+void printDATE();
+void printABSTRACT();
+void printAKNOW();
+void printPARAGRAPH(Paragraph);
+void printFRONTMATTER();
+void printCHAPTER(Chapter);
+void printFIGURE(Figure);
+void printTABLE(Table);
+void printROW(Row);
+void printCELL(Cell);
+void printSECTION(Section);
+void printLIST(List);
+void printCODEBLOCK(char*);
+void printSUMMARY(char*);
+void printFOOTNOTE(Footnote);
+void printREF(Ref);
+void printXREF(Xref);
+void printCITREF(Citref);
+void printITERM(Iterm);
+void printBOLD(Bold);
+void printITALIC(Italic);
+void printUNDERLINE(Underline);
+void printINLINECODE(InlineCode);
+void printACRONYM(Acronym);
+void printBODY();
+void printBACKMATTER();
+void printREPORT(FILE* f);

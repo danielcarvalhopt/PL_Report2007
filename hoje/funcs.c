@@ -2,24 +2,14 @@
 #include "report.h"
 
 extern Report r;
+FILE* out;
 /*
 #define OPEN(X) printf("<"); printf(#X); printf(">");
 #define CLOSE(X) printf("</"); printf(#X); printf(">\n");
 #define PRINT_HTML(X, TAG) OPEN(TAG) printf("%s",r.X); CLOSE(TAG)
 
-void printHTML() {
-    
-    puts("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
-    printFrontMatter();
-    puts("</body></html>");
-}
 
-void printParagraph(Paragraph p) {
-    puts(p.texto);
-    puts("\n");
-}
-
-void printFrontMatter() {
+void printFRONTMATTER() {
     PRINT_HTML(frontmatter.title,title);
     puts("</head><body>");
     printf("<hr><h3><u>Title:</u> ");PRINT_HTML(frontmatter.title, k);printf("</h3>");
@@ -43,7 +33,7 @@ void printFrontMatter() {
     printf("\n");
 }
 
-
+*/
 void printAUTORES() {
 	Author *a; 
 	int i;
@@ -61,7 +51,7 @@ void printAUTORES() {
     printf("</table>");
 }   
 
-void printDataHtml() {
+void printDATE() {
 printf("<script>");
 printf("var mydate=new Date()\n");
 printf("var year=mydate.getYear()\n");
@@ -80,7 +70,95 @@ printf("document.write(\"\"+dayarray[day]+\", \"+daym+\" de \"+montharray[month]
 printf("</script>\n");
 }
 
-*/
+void printABSTRACT() {
+    printf("<hr>");
+    printf("<h1>Abstract</h1>");
+    int i;
+    Paragraph *p;
+    for (i = 0; i <r.frontmatter.abstract.paragraphs->len ; i++) {
+        p = &g_array_index(r.frontmatter.abstract.paragraphs,Paragraph,i);
+        printPARAGRAPH(*p);
+    }
+}
+
+void printAKNOW() {
+    printf("<hr>");
+    printf("<h1>Aknowledgements</h1>");
+    int i;
+    Paragraph *p;
+    for (i = 0; i <r.frontmatter.aknow.paragraphs->len ; i++) {
+        p = &g_array_index(r.frontmatter.aknow.paragraphs,Paragraph,i);
+        printPARAGRAPH(*p);
+    }
+
+}
+void printCHAPTER(Chapter c){
+    printf("<hr>");
+    fprintf("<h1>%s</h1>",c.title);
+    Elem* elem;
+    int i;
+    for (i = 0; i <c.elems->len ; i++) {
+        elem = &g_array_index(c.elems,Elem,i);
+        switch(elem->id){
+            case FIGURE: 
+                printFIGURE(elem->e.fig);
+            break;
+            case TABLE: 
+                printTABLE(elem->e.table);
+            break;  
+            case LIST: 
+                printLIST(elem->e.list);
+            break;
+            case SECTION: 
+                printSECTION(elem->e.section);
+            break;
+            case CODEBLOCK: 
+                printCODEBLOCK(elem->e.codeblock);
+            break;
+            case SUMMARY: 
+                printSUMMARY(elem->e.summary);
+            break;
+        }
+
+    }
+}
+void printFRONTMATTER() {
+
+
+}
+void printPARAGRAPH(Paragraph p) {}
+void printFIGURE(Figure f){}
+void printTABLE(Table t){}
+void printROW(Row r){}
+void printCELL(Cell c){}
+void printSECTION(Section c){}
+void printLIST(List list){}
+void printCODEBLOCK(char* t){}
+void printSUMMARY(char* t){}
+void printFOOTNOTE(Footnote fn){}
+void printREF(Ref r){}
+void printXREF(Xref xr){}
+void printCITREF(Citref ct){}
+void printITERM(Iterm i){}
+void printBOLD(Bold b){}
+void printITALIC(Italic i){}
+void printUNDERLINE(Underline un){}
+void printINLINECODE(InlineCode in){}
+void printACRONYM(Acronym a){}
+void printBODY(){}
+void printBACKMATTER(){}
+void printREPORT(FILE* f){
+    out = f;
+    puts("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+    fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
+    printFRONTMATTER();
+    printBODY();
+    printBACKMATTER();
+    
+    fprintf(out,"</body></html>");
+}
+
+
 void initAbstract(){r.frontmatter.abstract.paragraphs = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
 void initKeywords(){r.frontmatter.keywords = g_array_new(FALSE,FALSE,sizeof(char*));}
 void initAuthors(){r.frontmatter.authors = g_array_new(FALSE,FALSE,sizeof(Author));}
