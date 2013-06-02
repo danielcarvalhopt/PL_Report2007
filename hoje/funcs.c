@@ -94,7 +94,7 @@ void printAKNOW() {
 }
 void printCHAPTER(Chapter c){
     printf("<hr>");
-    fprintf("<h1>%s</h1>",c.title);
+    fprintf(out,"<h1>%s</h1>",c.title);
     Elem* elem;
     int i;
     for (i = 0; i <c.elems->len ; i++) {
@@ -123,10 +123,27 @@ void printCHAPTER(Chapter c){
     }
 }
 void printFRONTMATTER() {
+    fprintf(out,"<hr><h3><u>Title: %s</u></h3>",r.frontmatter.title);
+    fprintf(out,"<h3><u>Subtitle: %s</u></h3>",r.frontmatter.subtitle);
+    printAUTORES();
+    fprintf(out,"<h3><u>Date: </u></h3>");
+    if (r.frontmatter.date == NULL) 
+        printDATE();
+    else 
+        {
+            fprintf(out,"%s",r.frontmatter.date);
+        }
+    fprintf(out,"<hr><hr>");
+    printABSTRACT();
+    printAKNOW();
 
-
+    fprintf(out,"<hr><hr>");
 }
-void printPARAGRAPH(Paragraph p) {}
+
+void printPARAGRAPH(Paragraph p) {
+}
+
+
 void printFIGURE(Figure f){}
 void printTABLE(Table t){}
 void printROW(Row r){}
@@ -149,12 +166,11 @@ void printBODY(){}
 void printBACKMATTER(){}
 void printREPORT(FILE* f){
     out = f;
-    puts("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+    fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
     fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
     printFRONTMATTER();
     printBODY();
     printBACKMATTER();
-    
     fprintf(out,"</body></html>");
 }
 
