@@ -2,6 +2,24 @@
 
 /**/
 
+#define FIGURE 1
+#define TABLE 2
+#define LIST 3
+#define SECTION 4
+#define CODEBLOCK 5
+#define SUMMARY 6
+
+#define TEXT 7
+#define FOOTNOTE 8
+#define REF 9
+#define CITREF 10
+#define ITERM 11
+#define BOLD 12
+#define ITALIC 13
+#define UNDERLINE 14
+#define INLINECODE 15
+#define ACRONYM 16
+
 typedef struct sAbstract
 {
 	GArray* paragraphs;
@@ -152,7 +170,6 @@ typedef union uParagraphElem
 	Underline underline;
 	InlineCode inlineCode;
 	Acronym acronym;
-	int id;
 } Paragraph_ElemU;
 
 typedef struct sParagraphElem
@@ -169,7 +186,6 @@ typedef union uElemsSec
 	List list;
 	char* codeblock;
 	char* summary;
-	int id;
 } SecElemU;
 
 typedef struct sElemsSec
