@@ -7,7 +7,7 @@ T=2
 $(EXEC): $(NAME).fl $(NAME).y
 	flex $(NAME).fl
 	yacc -d $(NAME).y 
-	gcc $(sourceFiles) $(generatedFiles) -o $(EXEC) `pkg-config --cflags --libs glib-2.0`
+	gcc $(sourceFiles) $(generatedFiles) -o $(EXEC) 'pkg-config --cflags --libs glib-2.0'
 
 clean: $(generatedFiles) $(EXEC)
 	rm $(generatedFiles) $(EXEC)

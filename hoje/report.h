@@ -65,11 +65,13 @@ typedef struct sTable
 {
 	char* caption;
 	GArray* rows;
+	int size;
 } Table;
 
 typedef struct sRow
 {
 	GArray * cells;
+	int size;
 } Row;
 
 typedef struct sCell
@@ -132,7 +134,7 @@ typedef struct sAcronym{
 	char* text;
 } Acronym;
 
-typedef union uParagraphElems
+typedef union uParagraphElem
 {
 	char* text;
 	Footnote footnote;
@@ -145,7 +147,7 @@ typedef union uParagraphElems
 	Underline underline;
 	InlineCode inlineCode;
 	Acronym acronym;
-} Paragraph_Elems;
+} Paragraph_Elem;
 
 typedef union uElemsSec
 {
@@ -155,7 +157,7 @@ typedef union uElemsSec
 	List list;
 	char* codeblock;
 	char* summary;
-} ElemSec;
+} SecElem;
 
 typedef struct sBackMatter
 {
@@ -169,14 +171,25 @@ typedef struct sReport
 	BackMatter backMatter;
 } Report;
 
-/* BackMatter */
 
 
 
-/*Procedures*/
+/*Initialization procedures*/
+void initReport();
+void initAbstract();
+void initKeywords();
+void initAuthors();
+void initAknowls();
+void initBody();
+Chapter initChapter(Chapter c);
+Table initTable(Table t);
+Table initRow(Table t);
+Section initSection(Section s);
+List initList(List s);
+
+/*Printing procedures*/
 void printHTML();
 void printAUTORES();
-void initReport();
 void printDataHtml();
 void printFrontMatter();
 void printParapraph(Paragraph);
