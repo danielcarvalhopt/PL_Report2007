@@ -66,6 +66,50 @@ extern FILE* yyout;
 %token END_SIZE
 %token BEGIN_TABLE
 %token END_TABLE
+%token KEYWORDS
+%token BEGIN_ROW
+%token END_ROW
+%token BEGIN_CELL
+%token END_CELL
+%token END_LIST
+%token END_CODEBLOCK
+%token BEGIN_INST
+%token END_INST
+%token INDEX
+%token INDEX_F
+%token INDEX_T
+%token BEGIN_SCALE
+%token END_SCALE
+%token BEGIN_SEC
+%token END_SEC
+%token BEGIN_LIST
+%token BEGIN_CODEBLOCK
+%token BEGIN_SUMMARY
+%token END_SUMMARY
+%token BEGIN_BACKMATTER
+%token END_BACKMATTER
+%token BEGIN_FOOTNOTE
+%token END_FOOTNOTE
+%token BEGIN_REF
+%token END_REF
+%token BEGIN_XREF
+%token END_XREF
+%token BEGIN_CITEREF
+%token END_CITEREF
+%token BEGIN_ITERM
+%token END_ITERM
+%token BEGIN_BOLD
+%token END_BOLD
+%token BEGIN_ITALIC
+%token END_ITALIC
+%token BEGIN_UNDERLINE
+%token END_UNDERLINE
+%token BEGIN_INLINECODE
+%token END_INLINECODE
+%token BEGIN_ACRONYM
+%token END_ACRONYM
+
+
 
 %token <str> TEXT
 %type <str> text
