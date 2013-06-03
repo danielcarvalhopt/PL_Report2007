@@ -18,3 +18,11 @@ y.tab.c
 y.tab.h
 
 hoje/report.h.gch
+
+.DS_Store
+
+hoje/PL_Report2007.pdf
+
+report.h.gch
+
+yacc-makefile-etc.tgz

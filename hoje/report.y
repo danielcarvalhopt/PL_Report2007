@@ -4,11 +4,13 @@
 #include <string.h>
 
 Report r;
+
 Author a;
 Paragraph p;
 Figure f;
 Table t;
 Chapter c;
+char* aux;
 int yyerror(char *s);
 extern FILE* yyin;
 extern FILE* yyout;
@@ -114,15 +116,17 @@ extern FILE* yyout;
 %token <str> TEXT
 %type <str> text
 %type <str> Title
+%type <str> Subtitle
 
 %%
 
 Report: BEGIN_REPORT FrontMatter Body END_REPORT ;
 
-FrontMatter: BEGIN_FM Title Subtitle Authors Date Abstract Aknow END_FM { r.frontmatter.title = strdup($2);}
+FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM 
 	| ;
 
-Title: BEGIN_TITLE text END_TITLE   { $$=$2;};
+
+Title: BEGIN_TITLE text END_TITLE   { r.frontmatter.title = strdup($2); };
 
 Subtitle: BEGIN_SUBTITLE text END_SUBTITLE      { r.frontmatter.subtitle = strdup($2);};
 
@@ -137,23 +141,49 @@ Number: BEGIN_NUMBER text END_NUMBER    { a.number = strdup($2);}
 	| ;	
 
 Mail: BEGIN_MAIL text END_MAIL  { a.mail = strdup($2);} 
-	|;
+	| ;
 
 Date: BEGIN_DATE text END_DATE  { r.frontmatter.date = strdup($2);}
     | TODAY { r.frontmatter.date = NULL ;};
 
+Institution: BEGIN_INST text END_INST {r.frontmatter.institution = strdup($2);}
+
+Keywords: KEYWORDS Words KEYWORDS 
+    | ; 
+
+Words: text       {g_array_append_val(r.frontmatter.keywords, ($1));}
+     | Words text {g_array_append_val(r.frontmatter.keywords, ($2));};
+
+
 Abstract: BEGIN_ABS Paragraphs END_ABS { g_array_append_val(r.frontmatter.abstract.paragraphs,p);}
+    | ;
 
 Aknow: BEGIN_AKN Paragraphs END_AKN 
     | ;
+
 
 Paragraph: BEGIN_PARA text END_PARA { } 
 
 Paragraphs: Paragraph 
     | Paragraphs Paragraph ;
 
+Toc: INDEX  {r.frontmatter.index = 1;}
+    |  {r.frontmatter.index = 0;};
+
+Lof: INDEX_F    {r.frontmatter.figures_index= 1;}
+    |  {r.frontmatter.figures_index= 0;};
+
+Lot: INDEX_T    {r.frontmatter.tables_index = 1;}
+    |  {r.frontmatter.tables_index = 0;};
+
 Body: BEGIN_BODY Chapters END_BODY
     | ;
+
+Elem: Paragraph
+    | Figure 
+    | Table ;
+
+
 
 Elems: Elem
     | Elems Elem;
