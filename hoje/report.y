@@ -7,7 +7,6 @@ Report r;
 
 Author a;
 Paragraph p;
-Figure f;
 Table t;
 Chapter c;
 Elem e;
@@ -16,6 +15,12 @@ SecElem se;
 Paragraph_Elem pe;
 char* aux;
 GArray * paragraphs;
+GArray * elems;
+GArray * chapters;
+Figure fig;
+Table table;
+List list;
+Section section;
 int yyerror(char *s);
 extern FILE* yyin;
 extern FILE* yyout;
@@ -127,12 +132,12 @@ extern int yylineno;
 
 %%
 
-Report: BEGIN_REPORT FrontMatter BackMatter END_REPORT ;
+Report: BEGIN_REPORT FrontMatter Body BackMatter END_REPORT ;
 
-FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM  ;
+FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM  { r.frontmatter.title = strdup($2); };;
 
 
-Title: BEGIN_TITLE text END_TITLE   { r.frontmatter.title = strdup($2); };
+Title: BEGIN_TITLE text END_TITLE  {$$=$2;};
 
 Subtitle: BEGIN_SUBTITLE text END_SUBTITLE      { r.frontmatter.subtitle = strdup($2);};
 
@@ -195,10 +200,37 @@ Lot: INDEX_T    {r.frontmatter.tables_index = 1;}
     |  {r.frontmatter.tables_index = 0;};
 
 
-BackMatter: BEGIN_BACKMATTER Paragraphs END_BACKMATTER {r.backMatter.paragraphs = paragraphs; paragraphs= g_array_new(FALSE,FALSE,sizeof(Paragraph));}
-    |;
+BackMatter: BEGIN_BACKMATTER Paragraphs END_BACKMATTER {r.backMatter.paragraphs = paragraphs; paragraphs= g_array_new(FALSE,FALSE,sizeof(Paragraph));};
 
+Body: BEGIN_BODY Chapters END_BODY {r.body.chapters = chapters; chapters= g_array_new(FALSE,FALSE,sizeof(Chapter));} ;
+    | ;
+
+
+Chapters: Chapter {g_array_append_val(chapters, c); c.elems = g_array_new(FALSE,FALSE,sizeof(Elem));}
+    | Chapters Chapter {g_array_append_val(chapters, c); c.elems = g_array_new(FALSE,FALSE,sizeof(Elem));};
+
+Chapter: BEGIN_CHAP Title Elems END_CHAP { c.title = strdup($2); c.elems = elems; elems = g_array_new(FALSE,FALSE,sizeof(Elem));};
+
+Elems: Elem     {g_array_append_val(elems, e); e.e.paragraph.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
+    | Elems Elem {g_array_append_val(elems, e); e.e.paragraph.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));};
+
+Elem: Paragraph {e.id = PARAGRAPH; e.e.paragraph=p; p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
+    | Summary {e.id = SUMMARY;}
+    | Codeblock {e.id = CODEBLOCK;}
+    | BEGIN_LIST List END_LIST  {e.id = LIST; e.e.list.items = list.items; list.items = g_array_new(FALSE,FALSE,sizeof(char*));}
+    | Figure {e.id = FIGURE; e.e.fig = fig;}; 
+
+Summary: BEGIN_SUMMARY text END_SUMMARY {e.e.summary = strdup($2);};
+
+Codeblock: BEGIN_CODEBLOCK text END_CODEBLOCK {e.e.codeblock = strdup($2);};
+
+List: text {g_array_append_val(list.items, $1); }
+    | List text {g_array_append_val(list.items, $2); };
 text: TEXT {$$=$1;};
+
+Figure:  BEGIN_FIG Graphic Caption END_FIG
+Graphic: BEGIN_GRAPH text END_GRAPH {fig.path= strdup($2);};
+Caption: BEGIN_CAPTION text END_CAPTION {fig.caption= strdup($2); fig.size=100;};
 
 %%
 
@@ -207,6 +239,9 @@ int yyerror(char * s){fprintf(stderr,"%d:%s\n", yylineno, s);}
 int main(int argc, char *argv[]){ 
     p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));
     paragraphs = g_array_new(FALSE,FALSE,sizeof(Paragraph));
+    elems = g_array_new(FALSE,FALSE,sizeof(Elem));
+    chapters = g_array_new(FALSE,FALSE,sizeof(Chapter));
+    list.items = g_array_new(FALSE,FALSE,sizeof(char*));
     if(argc > 1) {
     	yyin = fopen(argv[1],"r");
     	yyout = fopen("report.html","w+");

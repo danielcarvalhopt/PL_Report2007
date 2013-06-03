@@ -77,6 +77,9 @@ void printCHAPTER(Chapter c){
     for (i = 0; i <c.elems->len ; i++) {
         elem = &g_array_index(c.elems,Elem,i);
         switch(elem->id){
+            case PARAGRAPH: 
+                printPARAGRAPH(elem->e.paragraph);
+            break;
             case FIGURE: 
                 printFIGURE(elem->e.fig);
             break;
@@ -120,7 +123,9 @@ void printFRONTMATTER() {
     fprintf(out,"<hr><hr>");
     printABSTRACT();
     printAKNOW();
-
+    printINDEX();
+    printINDEXFIG();
+    printINDEXTAB();
     fprintf(out,"<hr><hr>");
 }
 
@@ -169,7 +174,7 @@ void printPARAGRAPH(Paragraph p) {
 }
 
 void printFIGURE(Figure f){
-    fprintf(out,"<img src=\"%s.%s\" alt=<a name=\"%s\">%s</a> width=\"%f\" height=\"%f\">",f.path,f.format,f.caption,f.caption,f.size,f.size);
+    fprintf(out,"<figure><img src=\"%s\" name=\"%s\" width=\"%f\" height=\"%f\"><figcaption>%s</figcaption></figure>",f.path,f.caption,f.size,f.size,f.caption);
 }
 
 void printTABLE(Table t){
@@ -305,7 +310,8 @@ void printBODY(){
 }
 
 void printBACKMATTER(){
-    fprintf(out,"<hr><hr>");
+    fprintf(out,"<hr>");
+    fprintf(out,"<h2>Epilogue</h2>");
     int i;
     Paragraph *p;
     for (i = 0; i <r.backMatter.paragraphs->len ; i++) {
@@ -317,17 +323,21 @@ void printBACKMATTER(){
 
 void printINDEX() {
     if(r.frontmatter.index) {
+    fprintf(out,"<hr>");
+    fprintf(out,"<h2>Table of Contents</h2>");
     int i;
     Chapter *c;
         for (i = 0; i <r.body.chapters->len; i++) {
             c = &g_array_index(r.body.chapters,Chapter,i);
-            fprintf(out,"<a href=\"#%s\">%s<a/>",c->title,c->title);     
+            fprintf(out,"<p><a href=\"#%s\">%s<a/></p>\n",c->title,c->title);     
         }
     }
 }
 
 void printINDEXFIG() {
     if(r.frontmatter.figures_index) {
+    fprintf(out,"<hr>");
+    fprintf(out,"<h2>Index of Figures</h2>");
     Chapter* c;
     Elem* elem;
     int i,j;
@@ -336,7 +346,7 @@ void printINDEXFIG() {
             c = &g_array_index(r.body.chapters,Chapter,i);    
                 for (i = 0; i <c->elems->len ; i++) {
                     elem = &g_array_index(c->elems,Elem,i);
-                    fprintf(out,"<a href=\"#%s\">%s<a/>",elem->e.fig.caption,elem->e.fig.caption);     
+                    fprintf(out,"<p><a href=\"#%s\">%s<a/></p>",elem->e.fig.caption,elem->e.fig.caption);     
                 }
 
         }   
@@ -346,6 +356,8 @@ void printINDEXFIG() {
 
 void printINDEXTAB() {
     if(r.frontmatter.tables_index) {
+    fprintf(out,"<hr>");
+    fprintf(out,"<h2>Index of Tables</h2>");
     Chapter* c;
     Elem* elem;
     int i,j;
@@ -354,7 +366,7 @@ void printINDEXTAB() {
             c = &g_array_index(r.body.chapters,Chapter,i);    
                 for (i = 0; i <c->elems->len ; i++) {
                     elem = &g_array_index(c->elems,Elem,i);
-                    fprintf(out,"<a href=\"#%s\">%s<a/>",elem->e.fig.caption,elem->e.fig.caption);     
+                    fprintf(out,"<p><a href=\"#%s\">%s<a/></p>",elem->e.fig.caption,elem->e.fig.caption);     
                 }
 
         }   
@@ -368,8 +380,8 @@ void printREPORT(FILE* f){
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
     fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
     printFRONTMATTER();
-    //printBODY();
-    //printBACKMATTER();
+    printBODY();
+    printBACKMATTER();
     fprintf(out,"</body></html>");
 }
 

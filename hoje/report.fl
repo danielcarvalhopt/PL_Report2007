@@ -124,8 +124,9 @@ newline      "\n"
 	}
 
 <codeblock>{
+	{end_codeblock}		{BEGIN(INITIAL); return END_CODEBLOCK;}	
 	[ \t\n]+  					;
-	[\n.]{end_codeblock}		{yytext[strlen(yytext)-10]='\0'; yylval.str= yytext; BEGIN(INITIAL); return END_CODEBLOCK;}	
+	.+					{yylval.str= yytext; return TEXT;}
 	}
 
 {begin_report}	{return BEGIN_REPORT;}

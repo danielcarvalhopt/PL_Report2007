@@ -1,20 +1,4 @@
 
-Body: BEGIN_BODY Chapters END_BODY
-    | ;
-
-Elem: Paragraph
-    | Figure 
-    | Table ;
-
-
-
-Elems: Elem
-    | Elems Elem;
-
-Chapter: BEGIN_CHAP Title Elems END_CHAP { c.title = strdup($2);};
-
-Chapters: Chapter
-    | Chapters Chapter;
 
 Figure: BEGIN_FIG Graphic Caption Size END_FIG ;
 

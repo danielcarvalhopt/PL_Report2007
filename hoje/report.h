@@ -8,7 +8,7 @@
 #define SECTION 4
 #define CODEBLOCK 5
 #define SUMMARY 6
-
+#define PARAGRAPH 18
 #define TEXTO 7
 #define FOOTNOTE 8
 #define REF 9
