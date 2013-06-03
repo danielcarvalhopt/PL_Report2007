@@ -19,7 +19,7 @@ delete:
 	sudo rm -f /usr/bin/$(EXEC)
 	sudo rm -f /usr/share/man/man1/$(EXEC).1
 
-install: link clean
+install:
 	sudo cp $(EXEC).1 /usr/share/man/man1/
 	sudo cp $(EXEC) /usr/bin/
-	#rm -r ../PL\ -\ Wikipedia
+	#rm -r ../

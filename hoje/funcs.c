@@ -179,14 +179,14 @@ void printFIGURE(Figure f){
 
 void printTABLE(Table t){
     fprintf(out,"<table border=2>");
-    fprintf(out,"<caption><a name=\"%s\">%s</a></caption>",t.caption,t.caption);
+    //fprintf(out,"<caption><a name=\"%s\">%s</a></caption>",t.caption,t.caption);
     int i;
     Row* r;
     for (i = 0; i <t.rows->len ; i++) {
     r = &g_array_index(t.rows,Row,i);
     printROW(*r);
-    fprintf(out,"</table>");
     }
+    fprintf(out,"</table>");
 }
 
 void printROW(Row r){

@@ -10,7 +10,6 @@ Paragraph p;
 Table t;
 Chapter c;
 Elem e;
-Row row;
 SecElem se;
 Paragraph_Elem pe;
 char* aux;
@@ -18,9 +17,13 @@ GArray * paragraphs;
 GArray * elems;
 GArray * chapters;
 Figure fig;
+Row row;
 Table table;
 List list;
+Cell cell;
+
 Section section;
+
 int yyerror(char *s);
 extern FILE* yyin;
 extern FILE* yyout;
@@ -218,7 +221,18 @@ Elem: Paragraph {e.id = PARAGRAPH; e.e.paragraph=p; p.prg_elem = g_array_new(FAL
     | Summary {e.id = SUMMARY;}
     | Codeblock {e.id = CODEBLOCK;}
     | BEGIN_LIST List END_LIST  {e.id = LIST; e.e.list.items = list.items; list.items = g_array_new(FALSE,FALSE,sizeof(char*));}
-    | Figure {e.id = FIGURE; e.e.fig = fig;}; 
+    | Figure {e.id = FIGURE; e.e.fig = fig;}
+    | Table {e.id = TABLE;}; 
+
+Table: BEGIN_TABLE TRowList END_TABLE {e.e.table= table; table.rows = g_array_new(FALSE,FALSE,sizeof(Row));};
+
+
+TRowList: TRowList BEGIN_ROW TRow END_ROW  {g_array_append_val(table.rows, row); row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));}
+    | BEGIN_ROW TRow END_ROW{g_array_append_val(table.rows, row); row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));}
+    |;
+
+TRow: BEGIN_CELL text END_CELL { cell.text= strdup($2); g_array_append_val(row.cells, cell); }
+    | TRow BEGIN_CELL text END_CELL{ cell.text= strdup($3); g_array_append_val(row.cells, cell); };
 
 Summary: BEGIN_SUMMARY text END_SUMMARY {e.e.summary = strdup($2);};
 
@@ -228,9 +242,9 @@ List: text {g_array_append_val(list.items, $1); }
     | List text {g_array_append_val(list.items, $2); };
 text: TEXT {$$=$1;};
 
-Figure:  BEGIN_FIG Graphic Caption END_FIG
+Figure:  BEGIN_FIG Graphic FCaption END_FIG
 Graphic: BEGIN_GRAPH text END_GRAPH {fig.path= strdup($2);};
-Caption: BEGIN_CAPTION text END_CAPTION {fig.caption= strdup($2); fig.size=100;};
+FCaption: BEGIN_CAPTION text END_CAPTION {fig.caption= strdup($2); fig.size=100;};
 
 %%
 
@@ -242,6 +256,8 @@ int main(int argc, char *argv[]){
     elems = g_array_new(FALSE,FALSE,sizeof(Elem));
     chapters = g_array_new(FALSE,FALSE,sizeof(Chapter));
     list.items = g_array_new(FALSE,FALSE,sizeof(char*));
+    row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));
+    table.rows = g_array_new(FALSE,FALSE,sizeof(Row));
     if(argc > 1) {
     	yyin = fopen(argv[1],"r");
     	yyout = fopen("report.html","w+");

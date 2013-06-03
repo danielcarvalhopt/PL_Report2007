@@ -1,18 +1,42 @@
-
-
-Figure: BEGIN_FIG Graphic Caption Size END_FIG ;
-
-Graphic: BEGIN_GRAPH Path Format END_GRAPH ;
-
-Path: BEGIN_PATH text END_PATH { f.path = strdup($2);};
-
-Format: BEGIN_FORMAT text END_FORMAT { f.format = strdup($2);};
-    | ;
-
-Caption: BEGIN_CAPTION text END_CAPTION { f.caption = strdup($2);};
-
-Size: BEGIN_SIZE text END_SIZE { f.size = atof($2);};
-    | ;
-
-Table: BEGIN_TABLE Caption END_TABLE ;
-
+			BROW
+				BCELL
+					Dados
+				ECELL
+				BCELL
+					Mais dados
+				ECELL
+				BCELL
+					Teste
+				ECELL
+			EROW
+				BCELL
+					MAis dados
+				ECELL					
+				BCELL
+					TESTE
+				ECELL
+				BCELL
+					TESTE2
+				ECELL
+			BROW
+				BCELL
+					AInda mais dados
+				ECELL
+				BCELL
+					para variar
+				ECELL
+				BCELL
+					ok
+				ECELL
+			EROW
+			BROW
+				BCELL
+					amostra
+				ECELL
+				BCELL
+					amostra2
+				ECELL
+				BCELL
+					amostra4
+				ECELL
+			EROW
