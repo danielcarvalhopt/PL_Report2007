@@ -38,41 +38,41 @@ void printAUTORES() {
 	Author *a; 
 	int i;
 	
-	printf("<h3><u>Authors:</u></h3>");
-    printf("<table border=\"2\"><tr><td><b>Name</b></td><td><b>Number</b></td><td><b>Email</b></td></tr>");
+	fprintf(out,"<h3><u>Authors:</u></h3>");
+    fprintf(out,"<table border=\"2\"><tr><td><b>Name</b></td><td><b>Number</b></td><td><b>Email</b></td></tr>");
     for (i = 0; i <r.frontmatter.authors->len ; i++) {
     	a = &g_array_index(r.frontmatter.authors,Author,i);
-    	printf("<tr>");
-    	printf("<td>%s</td>",a->name);
-    	printf("<td>%s</td>",a->number);
-    	printf("<td>%s</td>",a->mail);
-    	printf("</tr>");
+    	fprintf(out,"<tr>");
+    	fprintf(out,"<td>%s</td>",a->name);
+    	fprintf(out,"<td>%s</td>",a->number);
+    	fprintf(out,"<td>%s</td>",a->mail);
+    	fprintf(out,"</tr>");
 	}
-    printf("</table>");
+    fprintf(out,"</table>");
 }   
 
 void printDATE() {
-printf("<script>");
-printf("var mydate=new Date()\n");
-printf("var year=mydate.getYear()\n");
-printf("if (year < 1000)\n");
-printf("year+=1900\n");
-printf("var day=mydate.getDay()\n");
-printf("var month=mydate.getMonth()\n");
-printf("var daym=mydate.getDate()\n");
-printf("if (daym<10)\n");
-printf("daym=\"0\"+daym\n");
-printf("var dayarray=new\n");
-printf("Array(\"Domingo\",\"Segunda-Feira\",\"Terça-Feira\",\"Quarta-Feira\",\"Quinta-Feira\",\"Sexta-Feira\",\"Sábado\")\n");
-printf("var montharray=new\n");
-printf("Array(\"Janeiro\",\"Fevereiro\",\"Março\",\"Abril\",\"Maio\",\"Junho\",\"Julho\",\"Agosto\",\"Setembro\",\"Outubro\",\"Novembro\",\"Dezembro\")\n");
-printf("document.write(\"\"+dayarray[day]+\", \"+daym+\" de \"+montharray[month]+\" de \"+year+\"</b></font></small>\")\n");
-printf("</script>\n");
+fprintf(out,"<script>");
+fprintf(out,"var mydate=new Date()\n");
+fprintf(out,"var year=mydate.getYear()\n");
+fprintf(out,"if (year < 1000)\n");
+fprintf(out,"year+=1900\n");
+fprintf(out,"var day=mydate.getDay()\n");
+fprintf(out,"var month=mydate.getMonth()\n");
+fprintf(out,"var daym=mydate.getDate()\n");
+fprintf(out,"if (daym<10)\n");
+fprintf(out,"daym=\"0\"+daym\n");
+fprintf(out,"var dayarray=new\n");
+fprintf(out,"Array(\"Domingo\",\"Segunda-Feira\",\"Terça-Feira\",\"Quarta-Feira\",\"Quinta-Feira\",\"Sexta-Feira\",\"Sábado\")\n");
+fprintf(out,"var montharray=new\n");
+fprintf(out,"Array(\"Janeiro\",\"Fevereiro\",\"Março\",\"Abril\",\"Maio\",\"Junho\",\"Julho\",\"Agosto\",\"Setembro\",\"Outubro\",\"Novembro\",\"Dezembro\")\n");
+fprintf(out,"document.write(\"\"+dayarray[day]+\", \"+daym+\" de \"+montharray[month]+\" de \"+year+\"</b></font></small>\")\n");
+fprintf(out,"</script>\n");
 }
 
 void printABSTRACT() {
-    printf("<hr>");
-    printf("<h1>Abstract</h1>");
+    fprintf(out,"<hr>");
+    fprintf(out,"<h1>Abstract</h1>");
     int i;
     Paragraph *p;
     for (i = 0; i <r.frontmatter.abstract.paragraphs->len ; i++) {
@@ -82,8 +82,8 @@ void printABSTRACT() {
 }
 
 void printAKNOW() {
-    printf("<hr>");
-    printf("<h1>Aknowledgements</h1>");
+    fprintf(out,"<hr>");
+    fprintf(out,"<h1>Aknowledgements</h1>");
     int i;
     Paragraph *p;
     for (i = 0; i <r.frontmatter.aknow.paragraphs->len ; i++) {
@@ -93,7 +93,7 @@ void printAKNOW() {
 
 }
 void printCHAPTER(Chapter c){
-    printf("<hr>");
+    fprintf(out,"<hr>");
     fprintf(out,"<h1>%s</h1>",c.title);
     Elem* elem;
     int i;
@@ -141,17 +141,88 @@ void printFRONTMATTER() {
 }
 
 void printPARAGRAPH(Paragraph p) {
+    Paragraph_Elem* ph;
+    int i;
+    for (i = 0; i <p.prg_elem->len ; i++) {
+    ph = &g_array_index(p.prg_elem,Paragraph_Elem,i);
+    switch(ph->id){
+        case TEXTO: 
+            printTEXTO(ph->e.text);
+        break;
+        case FOOTNOTE: 
+            printFOOTNOTE(ph->e.footnote);
+        break;  
+        case REF: 
+             printREF(ph->e.ref);
+        break;
+        case XREF: 
+             printXREF(ph->e.xref);
+        break;
+        case CITREF: 
+            printCITREF(ph->e.citref);
+        break;
+        case ITERM: 
+            printITERM(ph->e.iterm);
+        break;
+         case BOLD: 
+            printBOLD(ph->e.bold);
+        break;
+        case ITALIC: 
+            printITALIC(ph->e.italic);
+        break;
+        case UNDERLINE: 
+            printUNDERLINE(ph->e.underline);
+        break;
+        case INLINECODE: 
+            printINLINECODE(ph->e.inlineCode);
+        break;
+
+        case ACRONYM: 
+            printACRONYM(ph->e.acronym);
+        break;
+        }
+    }
 }
 
+void printFIGURE(Figure f){
+    fprintf(out,"<img src=\"%s.%s\" alt=\"%s\" width=\"%f\" height=\"%f\">",f.path,f.format,f.caption,f.size,f.size);
+}
+void printTABLE(Table t){
+    fprintf(out,"<table border=2>");
+    fprintf(out,"<caption>%s</caption>",t.caption);
+    int i;
+    Row* r;
+    for (i = 0; i <t.rows->len ; i++) {
+    r = &g_array_index(t.rows,Row,i);
+    printROW(*r);
+    fprintf(out,"</table>");
+    }
+}
 
-void printFIGURE(Figure f){}
-void printTABLE(Table t){}
-void printROW(Row r){}
-void printCELL(Cell c){}
+void printROW(Row r){
+    int i;
+    Cell* c;
+    fprintf(out,"<tr>");
+    for (i = 0; i <r.cells->len ; i++) {
+    c = &g_array_index(r.cells,Cell,i);
+    printCELL(*c);
+    }
+    fprintf(out,"</tr>");
+}
+
+void printCELL(Cell c){
+    fprintf(out, "<td>%s</td>",c.text);
+}
+
 void printSECTION(Section c){}
 void printLIST(List list){}
 void printCODEBLOCK(char* t){}
 void printSUMMARY(char* t){}
+
+void printTEXTO(char* t){
+    fprintf(out, "<p>%s</p>",t);
+}
+
 void printFOOTNOTE(Footnote fn){}
 void printREF(Ref r){}
 void printXREF(Xref xr){}
@@ -164,6 +235,9 @@ void printINLINECODE(InlineCode in){}
 void printACRONYM(Acronym a){}
 void printBODY(){}
 void printBACKMATTER(){}
+void printINDEX() {}
+void printINDEXFIG() {}
+void printINDEXTAB() {}
 void printREPORT(FILE* f){
     out = f;
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
@@ -183,10 +257,8 @@ void initBody(){r.body.chapters = g_array_new(FALSE,FALSE,sizeof(Chapter));}
 
 Paragraph initParagraph(Paragraph p){p.prg_elem= g_array_new(FALSE, FALSE, sizeof(Paragraph_Elem));return p;} 
 Chapter initChapter(Chapter c){ c.elems =g_array_new(FALSE, FALSE, sizeof(Elem));return c;}
-Table initTable(Table t){ t.rows =g_array_new(FALSE, FALSE, sizeof(Row)); t.size=0; return t;}
-
-//Table initRow(Table t){ =g_array_new(FALSE, FALSE, sizeof()); t.size++;return t;}
-
+Table initTable(Table t){ t.rows =g_array_new(FALSE, FALSE, sizeof(Row)); return t;}
+Row initRow(Row r){ r.cells = g_array_new(FALSE, FALSE, sizeof(Cell)); ;return r;}
 Section initSection(Section s){ s.elems=g_array_new(FALSE, FALSE, sizeof(SecElem));return s;}
 List initList(List l){ l.items =g_array_new(FALSE, FALSE, sizeof(char*));return l;}
 

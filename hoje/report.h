@@ -12,13 +12,14 @@
 #define TEXTO 7
 #define FOOTNOTE 8
 #define REF 9
-#define CITREF 10
-#define ITERM 11
-#define BOLD 12
-#define ITALIC 13
-#define UNDERLINE 14
-#define INLINECODE 15
-#define ACRONYM 16
+#define XREF 10
+#define CITREF 11
+#define ITERM 12
+#define BOLD 13
+#define ITALIC 14
+#define UNDERLINE 15
+#define INLINECODE 16
+#define ACRONYM 17
 
 typedef struct sAbstract
 {
@@ -82,7 +83,6 @@ typedef struct sTable
 {
 	char* caption;
 	GArray* rows;
-	int size;
 } Table;
 
 typedef struct sRow
@@ -218,7 +218,7 @@ void initAknowls();
 void initBody();
 Chapter initChapter(Chapter c);
 Table initTable(Table t);
-Table initRow(Table t);
+Row initRow(Row r);
 Section initSection(Section s);
 List initList(List s);
 
@@ -239,6 +239,7 @@ void printSECTION(Section);
 void printLIST(List);
 void printCODEBLOCK(char*);
 void printSUMMARY(char*);
+void printTEXTO(char*);
 void printFOOTNOTE(Footnote);
 void printREF(Ref);
 void printXREF(Xref);
@@ -251,4 +252,7 @@ void printINLINECODE(InlineCode);
 void printACRONYM(Acronym);
 void printBODY();
 void printBACKMATTER();
+void printINDEX() ;
+void printINDEXFIG() ;
+void printINDEXTAB() ;
 void printREPORT(FILE* f);
