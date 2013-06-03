@@ -3,6 +3,7 @@
 
 extern Report r;
 FILE* out;
+int footnotes;
 /*
 #define OPEN(X) printf("<"); printf(#X); printf(">");
 #define CLOSE(X) printf("</"); printf(#X); printf(">\n");
@@ -133,6 +134,13 @@ void printFRONTMATTER() {
         {
             fprintf(out,"%s",r.frontmatter.date);
         }
+    fprintf(out,"<hr><h2><u>Institution: %s</u></h2>",r.frontmatter.institution);
+    int i;
+    char** s;
+    for (i = 0; i < r.frontmatter.keywords->len; i++) {
+    s = &g_array_index(r.frontmatter.keywords,char*,i);
+        fprintf(out,"- %s -",*s);
+    }
     fprintf(out,"<hr><hr>");
     printABSTRACT();
     printAKNOW();
@@ -214,6 +222,7 @@ void printCELL(Cell c){
     fprintf(out, "<td>%s</td>",c.text);
 }
 
+
 void printSECTION(Section c){
     fprintf(out,"<hr>");
     fprintf(out,"<h2>%s</h2>",c.title);
@@ -248,10 +257,10 @@ void printSECTION(Section c){
 void printLIST(List list){
     fprintf(out,"<ul>");
     int i;
-    char* s;
+    char** s;
     for (i = 0; i < list.items->len; i++) {
     s = &g_array_index(list.items,char*,i);
-        fprintf(out,"<li>%s</li>",s);
+        fprintf(out,"<li>%s</li>",*s);
         
     }
     fprintf(out,"</ul>");
@@ -261,14 +270,21 @@ void printCODEBLOCK(char* t){
     fprintf(out,"<code>%s</code>",t);
 }
 void printSUMMARY(char* t){
-    fprintf(out,"<p style=\"text-align: center;\">%s</p>");
+    fprintf(out,"<p style=\"text-align: center;\">%s</p>",t);
 }
 
 void printTEXTO(char* t){
     fprintf(out, "<p>%s</p>",t);
 }
 
-void printFOOTNOTE(Footnote fn){}
+void printFOOTNOTE(Footnote fn){
+
+    fprintf(out,"<sup><a href=\"#fn%d\" id=\"ref1\">%d</a></sup>",footnotes,footnotes);
+    fprintf(out,"<sup id=\"fn%d\">%d. [%s]<a href=\"#ref%d\" title=\"Jump back to footnote %d in the text.\">↩</a></sup>",footnotes,footnotes,fn.text,footnotes,footnotes);
+    footnotes++;
+}
+
+
 void printREF(Ref r){}
 void printXREF(Xref xr){}
 void printCITREF(Citref ct){}
@@ -284,6 +300,7 @@ void printINDEX() {}
 void printINDEXFIG() {}
 void printINDEXTAB() {}
 void printREPORT(FILE* f){
+    footnotes=0;
     out = f;
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
     fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
