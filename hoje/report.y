@@ -127,10 +127,9 @@ extern int yylineno;
 
 %%
 
-Report: BEGIN_REPORT FrontMatter END_REPORT ;
+Report: BEGIN_REPORT FrontMatter BackMatter END_REPORT ;
 
-FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM 
-	| ;
+FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM  ;
 
 
 Title: BEGIN_TITLE text END_TITLE   { r.frontmatter.title = strdup($2); };
@@ -168,7 +167,6 @@ Aknow: BEGIN_AKN Paragraphs END_AKN {r.frontmatter.aknow.paragraphs = paragraphs
 
 Paragraphs: Paragraph {g_array_append_val(paragraphs, p); p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
     | Paragraphs Paragraph {g_array_append_val(paragraphs, p); p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));};
-    | ;
 
 Paragraph: BEGIN_PARA Paragraph_Elems END_PARA ;
  
@@ -196,6 +194,9 @@ Lof: INDEX_F    {r.frontmatter.figures_index= 1;}
 Lot: INDEX_T    {r.frontmatter.tables_index = 1;}
     |  {r.frontmatter.tables_index = 0;};
 
+
+BackMatter: BEGIN_BACKMATTER Paragraphs END_BACKMATTER {r.backMatter.paragraphs = paragraphs; paragraphs= g_array_new(FALSE,FALSE,sizeof(Paragraph));}
+    |;
 
 text: TEXT {$$=$1;};
 

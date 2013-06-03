@@ -2,7 +2,7 @@ NAME = report
 generatedFiles = lex.yy.c y.tab.c y.tab.h
 sourceFiles = funcs.c report.h
 EXEC = report2007
-T=6
+T=7
 
 $(EXEC): $(NAME).fl $(NAME).y
 	flex $(NAME).fl

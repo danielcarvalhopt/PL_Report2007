@@ -64,4 +64,13 @@ BREPORT
 		EPARA
 	EAKN
 	EFM
+	BBM
+		BPARA
+			lyfluyfjy
+		EPARA
+		BPARA
+			çukgfykhfçfk
+		EPARA
+	EBM
+
 EREPORT

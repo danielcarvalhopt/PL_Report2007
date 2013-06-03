@@ -368,8 +368,8 @@ void printREPORT(FILE* f){
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
     fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
     printFRONTMATTER();
-    printBODY();
-    printBACKMATTER();
+    //printBODY();
+    //printBACKMATTER();
     fprintf(out,"</body></html>");
 }
 
