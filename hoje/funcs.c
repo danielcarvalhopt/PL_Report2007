@@ -134,7 +134,7 @@ void printFRONTMATTER() {
         {
             fprintf(out,"%s",r.frontmatter.date);
         }
-    fprintf(out,"<hr><h2><u>Institution: %s</u></h2>",r.frontmatter.institution);
+    fprintf(out,"<hr><h3><u>Institution:</u> %s</h3>",r.frontmatter.institution);
     int i;
     char** s;
     for (i = 0; i < r.frontmatter.keywords->len; i++) {
@@ -240,9 +240,6 @@ void printSECTION(Section c){
             case LIST: 
                 printLIST(elem->e.list);
             break;
-            case SECTION: 
-                printSECTION(elem->e.section);
-            break;
             case CODEBLOCK: 
                 printCODEBLOCK(elem->e.codeblock);
             break;
@@ -284,18 +281,52 @@ void printFOOTNOTE(Footnote fn){
     footnotes++;
 }
 
+void printREF(Ref r){
+    fprintf(out,"<a href=\"%s\">%s</a>",r.text,r.text);
+}
+void printXREF(Xref xr){
+    fprintf(out,"<a href=\"%s\">%s</a>",xr.text,xr.text);
+}
+void printCITREF(Citref ct){
+    fprintf(out,"<a href=\"%s\">%s</a>",ct.text,ct.text);
+}
+void printITERM(Iterm i){
+    fprintf(out,"<a href=\"%s\">%s</a>",i.text,i.text);
+}
+void printBOLD(Bold b){
+    fprintf(out,"<b>%s</b>",b.text);
+}
+void printITALIC(Italic i){
+    fprintf(out,"<i>%s</i>",i.text);
+}
+void printUNDERLINE(Underline un){
+    fprintf(out,"<u>%s</u>",un.text);
+}
+void printINLINECODE(InlineCode in){
+    fprintf(out,"<u>%s</u>",in.text);
+}
+void printACRONYM(Acronym a){
+    fprintf(out,"<acronym title= \"%s\">%s </acronym>",a.text,a.text);
+}
+void printBODY(){
+    int i;
+    Chapter *c;
+    for (i = 0; i <r.body.chapters->len; i++) {
+    c = &g_array_index(r.body.chapters,Chapter,i);
+    printCHAPTER(*c);     
+    }
+}
 
-void printREF(Ref r){}
-void printXREF(Xref xr){}
-void printCITREF(Citref ct){}
-void printITERM(Iterm i){}
-void printBOLD(Bold b){}
-void printITALIC(Italic i){}
-void printUNDERLINE(Underline un){}
-void printINLINECODE(InlineCode in){}
-void printACRONYM(Acronym a){}
-void printBODY(){}
-void printBACKMATTER(){}
+void printBACKMATTER(){
+    fprintf(out,"<hr><hr>");
+    int i;
+    Paragraph *p;
+    for (i = 0; i <r.backMatter.paragraphs->len ; i++) {
+        p = &g_array_index(r.backMatter.paragraphs,Paragraph,i);
+        printPARAGRAPH(*p);
+    }
+
+}
 void printINDEX() {}
 void printINDEXFIG() {}
 void printINDEXTAB() {}
