@@ -1,0 +1,34 @@
+
+Body: BEGIN_BODY Chapters END_BODY
+    | ;
+
+Elem: Paragraph
+    | Figure 
+    | Table ;
+
+
+
+Elems: Elem
+    | Elems Elem;
+
+Chapter: BEGIN_CHAP Title Elems END_CHAP { c.title = strdup($2);};
+
+Chapters: Chapter
+    | Chapters Chapter;
+
+Figure: BEGIN_FIG Graphic Caption Size END_FIG ;
+
+Graphic: BEGIN_GRAPH Path Format END_GRAPH ;
+
+Path: BEGIN_PATH text END_PATH { f.path = strdup($2);};
+
+Format: BEGIN_FORMAT text END_FORMAT { f.format = strdup($2);};
+    | ;
+
+Caption: BEGIN_CAPTION text END_CAPTION { f.caption = strdup($2);};
+
+Size: BEGIN_SIZE text END_SIZE { f.size = atof($2);};
+    | ;
+
+Table: BEGIN_TABLE Caption END_TABLE ;
+

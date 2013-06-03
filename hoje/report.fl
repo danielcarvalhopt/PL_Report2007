@@ -10,7 +10,7 @@
 %x list
 
 %option noyywrap
-
+%option yylineno
 
 begin_report "BREPORT"
 end_report "EREPORT"
@@ -104,7 +104,7 @@ newline      "\n"
 <keywords>{
 	[ \t\n]+  		{;}
 	[a-zA-Z]+		{yylval.str= strdup(yytext); return TEXT;}
-	";"				{return KEYWORDS; BEGIN(INITIAL);}
+	:{keywords}				{BEGIN(INITIAL); return KEYWORDS; }
 	}
 
 <table>{

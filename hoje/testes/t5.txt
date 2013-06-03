@@ -38,7 +38,7 @@ flex
 PL
 LEI
 Engenharia
-Informática
-;
+Informatica
+:KEYWORDS
 EFM
 EREPORT

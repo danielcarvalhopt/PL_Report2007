@@ -2,7 +2,7 @@ NAME = report
 generatedFiles = lex.yy.c y.tab.c y.tab.h
 sourceFiles = funcs.c report.h
 EXEC = report2007
-T=5
+T=6
 
 $(EXEC): $(NAME).fl $(NAME).y
 	flex $(NAME).fl
@@ -15,3 +15,11 @@ clean: $(generatedFiles) $(EXEC)
 test: $(EXEC)
 	./$(EXEC) testes/t$(T).txt
 
+delete:
+	sudo rm -f /usr/bin/$(EXEC)
+	sudo rm -f /usr/share/man/man1/$(EXEC).1
+
+install: link clean
+	sudo cp $(EXEC).1 /usr/share/man/man1/
+	sudo cp $(EXEC) /usr/bin/
+	#rm -r ../PL\ -\ Wikipedia

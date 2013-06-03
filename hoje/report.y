@@ -10,11 +10,16 @@ Paragraph p;
 Figure f;
 Table t;
 Chapter c;
+Elem e;
+Row row;
+SecElem se;
+Paragraph_Elem pe;
 char* aux;
+GArray * paragraphs;
 int yyerror(char *s);
 extern FILE* yyin;
 extern FILE* yyout;
-
+extern int yylineno;
 
 %}
 
@@ -45,7 +50,6 @@ extern FILE* yyout;
 %token END_ABS
 %token BEGIN_AKN
 %token END_AKN
-
 %token BEGIN_BODY
 %token END_BODY
 %token BEGIN_CHAP
@@ -109,6 +113,8 @@ extern FILE* yyout;
 %token BEGIN_INLINECODE
 %token END_INLINECODE
 %token BEGIN_ACRONYM
+%token END_CITREF
+%token BEGIN_CITREF
 %token END_ACRONYM
 
 
@@ -116,11 +122,12 @@ extern FILE* yyout;
 %token <str> TEXT
 %type <str> text
 %type <str> Title
-%type <str> Subtitle
+
+
 
 %%
 
-Report: BEGIN_REPORT FrontMatter Body END_REPORT ;
+Report: BEGIN_REPORT FrontMatter END_REPORT ;
 
 FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM 
 	| ;
@@ -155,17 +162,30 @@ Words: text       {g_array_append_val(r.frontmatter.keywords, ($1));}
      | Words text {g_array_append_val(r.frontmatter.keywords, ($2));};
 
 
-Abstract: BEGIN_ABS Paragraphs END_ABS { g_array_append_val(r.frontmatter.abstract.paragraphs,p);}
+Abstract: BEGIN_ABS Paragraphs END_ABS {r.frontmatter.abstract.paragraphs = paragraphs; paragraphs= g_array_new(FALSE,FALSE,sizeof(Paragraph));} ;
+
+Aknow: BEGIN_AKN Paragraphs END_AKN {r.frontmatter.aknow.paragraphs = paragraphs; paragraphs= g_array_new(FALSE,FALSE,sizeof(Paragraph));};
+
+Paragraphs: Paragraph {g_array_append_val(paragraphs, p); p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
+    | Paragraphs Paragraph {g_array_append_val(paragraphs, p); p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));};
     | ;
 
-Aknow: BEGIN_AKN Paragraphs END_AKN 
-    | ;
+Paragraph: BEGIN_PARA Paragraph_Elems END_PARA ;
+ 
+Paragraph_Elems: Paragraph_Elem {g_array_append_val(p.prg_elem, pe);}
+    | Paragraph_Elems Paragraph_Elem {g_array_append_val(p.prg_elem, pe);};
 
-
-Paragraph: BEGIN_PARA text END_PARA { } 
-
-Paragraphs: Paragraph 
-    | Paragraphs Paragraph ;
+Paragraph_Elem: text {pe.id= 7; pe.e.text=strdup($1);}
+    | BEGIN_FOOTNOTE text END_FOOTNOTE {pe.id= FOOTNOTE; pe.e.footnote.text = strdup($2);}
+    | BEGIN_REF text END_REF {pe.id= REF; pe.e.ref.text = strdup($2);}
+    | BEGIN_XREF text END_XREF {pe.id= XREF; pe.e.xref.text = strdup($2);}
+    | BEGIN_CITREF text END_CITREF {pe.id=CITREF; pe.e.citref.text = strdup($2);}
+    | BEGIN_ITERM text END_ITERM {pe.id= ITERM; pe.e.iterm.text = strdup($2);}
+    | BEGIN_BOLD text END_BOLD {pe.id= BOLD; pe.e.bold.text = strdup($2);}
+    | BEGIN_ITALIC text END_ITALIC {pe.id= ITALIC; pe.e.italic.text = strdup($2);}
+    | BEGIN_UNDERLINE text END_UNDERLINE {pe.id= UNDERLINE; pe.e.underline.text = strdup($2);} 
+    | BEGIN_INLINECODE text END_INLINECODE {pe.id= INLINECODE; pe.e.inlineCode.text = strdup($2);}
+    | BEGIN_ACRONYM text END_ACRONYM {pe.id= ACRONYM; pe.e.acronym.text = strdup($2);};
 
 Toc: INDEX  {r.frontmatter.index = 1;}
     |  {r.frontmatter.index = 0;};
@@ -176,54 +196,16 @@ Lof: INDEX_F    {r.frontmatter.figures_index= 1;}
 Lot: INDEX_T    {r.frontmatter.tables_index = 1;}
     |  {r.frontmatter.tables_index = 0;};
 
-Body: BEGIN_BODY Chapters END_BODY
-    | ;
-
-Elem: Paragraph
-    | Figure 
-    | Table ;
-
-
-
-Elems: Elem
-    | Elems Elem;
-
-Elem: Paragraph
-      | Figure 
-      | Table ;
-
-Chapter: BEGIN_CHAP Title Elems END_CHAP { c.title = strdup($2);};
-
-Chapters: Chapter
-    | Chapters Chapter;
-
-Figure: BEGIN_FIG Graphic Caption Size END_FIG ;
-
-Graphic: BEGIN_GRAPH Path Format END_GRAPH ;
-
-Path: BEGIN_PATH text END_PATH { f.path = strdup($2);};
-
-Format: BEGIN_FORMAT text END_FORMAT { f.format = strdup($2);};
-    | ;
-
-Caption: BEGIN_CAPTION text END_CAPTION { f.caption = strdup($2);};
-
-Size: BEGIN_SIZE text END_SIZE { f.size = atof($2);};
-    | ;
-
-Table: BEGIN_TABLE Caption END_TABLE ;
-
-
-
-
 
 text: TEXT {$$=$1;};
 
 %%
 
-int yyerror(char *s){fprintf(stderr,"%s\n",s);}
+int yyerror(char * s){fprintf(stderr,"%d:%s\n", yylineno, s);}
 
 int main(int argc, char *argv[]){ 
+    p.prg_elem = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));
+    paragraphs = g_array_new(FALSE,FALSE,sizeof(Paragraph));
     if(argc > 1) {
     	yyin = fopen(argv[1],"r");
     	yyout = fopen("report.html","w+");
