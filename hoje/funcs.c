@@ -214,10 +214,55 @@ void printCELL(Cell c){
     fprintf(out, "<td>%s</td>",c.text);
 }
 
-void printSECTION(Section c){}
-void printLIST(List list){}
-void printCODEBLOCK(char* t){}
-void printSUMMARY(char* t){}
+void printSECTION(Section c){
+    fprintf(out,"<hr>");
+    fprintf(out,"<h2>%s</h2>",c.title);
+    Elem* elem;
+    int i;
+    for (i = 0; i <c.elems->len ; i++) {
+        elem = &g_array_index(c.elems,Elem,i);
+        switch(elem->id){
+            case FIGURE: 
+                printFIGURE(elem->e.fig);
+            break;
+            case TABLE: 
+                printTABLE(elem->e.table);
+            break;  
+            case LIST: 
+                printLIST(elem->e.list);
+            break;
+            case SECTION: 
+                printSECTION(elem->e.section);
+            break;
+            case CODEBLOCK: 
+                printCODEBLOCK(elem->e.codeblock);
+            break;
+            case SUMMARY: 
+                printSUMMARY(elem->e.summary);
+            break;
+        }
+
+    }
+}
+
+void printLIST(List list){
+    fprintf(out,"<ul>");
+    int i;
+    char* s;
+    for (i = 0; i < list.items->len; i++) {
+    s = &g_array_index(list.items,char*,i);
+        fprintf(out,"<li>%s</li>",s);
+        
+    }
+    fprintf(out,"</ul>");
+}
+
+void printCODEBLOCK(char* t){
+    fprintf(out,"<code>%s</code>",t);
+}
+void printSUMMARY(char* t){
+    fprintf(out,"<p style=\"text-align: center;\">%s</p>");
+}
 
 void printTEXTO(char* t){
     fprintf(out, "<p>%s</p>",t);
