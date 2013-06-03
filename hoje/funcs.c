@@ -8,33 +8,8 @@ int footnotes;
 #define OPEN(X) printf("<"); printf(#X); printf(">");
 #define CLOSE(X) printf("</"); printf(#X); printf(">\n");
 #define PRINT_HTML(X, TAG) OPEN(TAG) printf("%s",r.X); CLOSE(TAG)
-
-
-void printFRONTMATTER() {
-    PRINT_HTML(frontmatter.title,title);
-    puts("</head><body>");
-    printf("<hr><h3><u>Title:</u> ");PRINT_HTML(frontmatter.title, k);printf("</h3>");
-    printf("<h3><u>Subtitle:</u> ");PRINT_HTML(frontmatter.subtitle,k);printf("</h3>");
-    printAUTORES();
-    printf("<h3><u>Date:</u></h3>");
-    if (r.frontmatter.date == NULL) 
-        printDataHtml();
-    else 
-        {
-            PRINT_HTML(frontmatter.date,k);
-        }
-    printf("<hr>");
-    printf("<h1>Abstract</h1>");
-    int i;
-    Paragraph *p;
-    for (i = 0; i <r.frontmatter.abstract.paragraphs->len ; i++) {
-        p = &g_array_index(r.frontmatter.abstract.paragraphs,Paragraph,i);
-        printParagraph(*p);
-    }
-    printf("\n");
-}
-
 */
+
 void printAUTORES() {
 	Author *a; 
 	int i;
@@ -93,9 +68,10 @@ void printAKNOW() {
     }
 
 }
+
 void printCHAPTER(Chapter c){
     fprintf(out,"<hr>");
-    fprintf(out,"<h1>%s</h1>",c.title);
+    fprintf(out,"<h1><a name=\"%s\">%s</a></h1>",c.title,c.title);
     Elem* elem;
     int i;
     for (i = 0; i <c.elems->len ; i++) {
@@ -124,8 +100,8 @@ void printCHAPTER(Chapter c){
     }
 }
 void printFRONTMATTER() {
-    fprintf(out,"<hr><h3><u>Title: %s</u></h3>",r.frontmatter.title);
-    fprintf(out,"<h3><u>Subtitle: %s</u></h3>",r.frontmatter.subtitle);
+    fprintf(out,"<hr><h3><u>Title: </u>%s</h3>",r.frontmatter.title);
+    fprintf(out,"<h3><u>Subtitle: </u>%s</h3>",r.frontmatter.subtitle);
     printAUTORES();
     fprintf(out,"<h3><u>Date: </u></h3>");
     if (r.frontmatter.date == NULL) 
@@ -193,11 +169,12 @@ void printPARAGRAPH(Paragraph p) {
 }
 
 void printFIGURE(Figure f){
-    fprintf(out,"<img src=\"%s.%s\" alt=\"%s\" width=\"%f\" height=\"%f\">",f.path,f.format,f.caption,f.size,f.size);
+    fprintf(out,"<img src=\"%s.%s\" alt=<a name=\"%s\">%s</a> width=\"%f\" height=\"%f\">",f.path,f.format,f.caption,f.caption,f.size,f.size);
 }
+
 void printTABLE(Table t){
     fprintf(out,"<table border=2>");
-    fprintf(out,"<caption>%s</caption>",t.caption);
+    fprintf(out,"<caption><a name=\"%s\">%s</a></caption>",t.caption,t.caption);
     int i;
     Row* r;
     for (i = 0; i <t.rows->len ; i++) {
@@ -266,6 +243,7 @@ void printLIST(List list){
 void printCODEBLOCK(char* t){
     fprintf(out,"<code>%s</code>",t);
 }
+
 void printSUMMARY(char* t){
     fprintf(out,"<p style=\"text-align: center;\">%s</p>",t);
 }
@@ -284,30 +262,39 @@ void printFOOTNOTE(Footnote fn){
 void printREF(Ref r){
     fprintf(out,"<a href=\"%s\">%s</a>",r.text,r.text);
 }
+
 void printXREF(Xref xr){
     fprintf(out,"<a href=\"%s\">%s</a>",xr.text,xr.text);
 }
+
 void printCITREF(Citref ct){
     fprintf(out,"<a href=\"%s\">%s</a>",ct.text,ct.text);
 }
+
 void printITERM(Iterm i){
     fprintf(out,"<a href=\"%s\">%s</a>",i.text,i.text);
 }
+
 void printBOLD(Bold b){
     fprintf(out,"<b>%s</b>",b.text);
 }
+
 void printITALIC(Italic i){
     fprintf(out,"<i>%s</i>",i.text);
 }
+
 void printUNDERLINE(Underline un){
     fprintf(out,"<u>%s</u>",un.text);
 }
+
 void printINLINECODE(InlineCode in){
     fprintf(out,"<u>%s</u>",in.text);
 }
+
 void printACRONYM(Acronym a){
     fprintf(out,"<acronym title= \"%s\">%s </acronym>",a.text,a.text);
 }
+
 void printBODY(){
     int i;
     Chapter *c;
@@ -327,9 +314,54 @@ void printBACKMATTER(){
     }
 
 }
-void printINDEX() {}
-void printINDEXFIG() {}
-void printINDEXTAB() {}
+
+void printINDEX() {
+    if(r.frontmatter.index) {
+    int i;
+    Chapter *c;
+        for (i = 0; i <r.body.chapters->len; i++) {
+            c = &g_array_index(r.body.chapters,Chapter,i);
+            fprintf(out,"<a href=\"#%s\">%s<a/>",c->title,c->title);     
+        }
+    }
+}
+
+void printINDEXFIG() {
+    if(r.frontmatter.figures_index) {
+    Chapter* c;
+    Elem* elem;
+    int i,j;
+
+        for (i = 0; i <r.body.chapters->len; i++) {
+            c = &g_array_index(r.body.chapters,Chapter,i);    
+                for (i = 0; i <c->elems->len ; i++) {
+                    elem = &g_array_index(c->elems,Elem,i);
+                    fprintf(out,"<a href=\"#%s\">%s<a/>",elem->e.fig.caption,elem->e.fig.caption);     
+                }
+
+        }   
+    }
+}   
+
+
+void printINDEXTAB() {
+    if(r.frontmatter.tables_index) {
+    Chapter* c;
+    Elem* elem;
+    int i,j;
+
+        for (i = 0; i <r.body.chapters->len; i++) {
+            c = &g_array_index(r.body.chapters,Chapter,i);    
+                for (i = 0; i <c->elems->len ; i++) {
+                    elem = &g_array_index(c->elems,Elem,i);
+                    fprintf(out,"<a href=\"#%s\">%s<a/>",elem->e.fig.caption,elem->e.fig.caption);     
+                }
+
+        }   
+    }
+
+}
+
 void printREPORT(FILE* f){
     footnotes=0;
     out = f;
@@ -340,7 +372,6 @@ void printREPORT(FILE* f){
     printBACKMATTER();
     fprintf(out,"</body></html>");
 }
-
 
 void initAbstract(){r.frontmatter.abstract.paragraphs = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
 void initKeywords(){r.frontmatter.keywords = g_array_new(FALSE,FALSE,sizeof(char*));}
