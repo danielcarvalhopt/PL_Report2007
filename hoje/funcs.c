@@ -385,6 +385,8 @@ void printREPORT(FILE* f){
     fprintf(out,"</body></html>");
 }
 
+void printReportLatex(FILE* f){;}
+
 void initAbstract(){r.frontmatter.abstract.paragraphs = g_array_new(FALSE,FALSE,sizeof(Paragraph_Elem));}
 void initKeywords(){r.frontmatter.keywords = g_array_new(FALSE,FALSE,sizeof(char*));}
 void initAuthors(){r.frontmatter.authors = g_array_new(FALSE,FALSE,sizeof(Author));}

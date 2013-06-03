@@ -261,9 +261,19 @@ int main(int argc, char *argv[]){
     if(argc > 1) {
     	yyin = fopen(argv[1],"r");
     	yyout = fopen("report.html","w+");
-    	initReport();
+        initReport();
     	yyparse();
-    	printREPORT(yyout);
+        if(argc > 2) {
+            if(strcmp(argv[2],"-l")==0){
+                printReportLatex(yyout);
+            }
+            else if(strcmp(argv[2],"-hl")==0){
+                printREPORT(yyout);
+            }
+            else if(strcmp(argv[2],"-h")==0){
+                printREPORT(yyout);
+            }
+        }
     	fclose(yyin);
     }
     else {

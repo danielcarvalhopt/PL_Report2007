@@ -256,3 +256,4 @@ void printINDEX() ;
 void printINDEXFIG() ;
 void printINDEXTAB() ;
 void printREPORT(FILE* f);
+void printReportLatex(FILE* f);

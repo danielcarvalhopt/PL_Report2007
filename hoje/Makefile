@@ -13,7 +13,7 @@ clean: $(generatedFiles) $(EXEC)
 	rm $(generatedFiles) $(EXEC)
 
 test: $(EXEC)
-	./$(EXEC) testes/t$(T).txt
+	./$(EXEC) testes/t$(T).txt -h
 
 delete:
 	sudo rm -f /usr/bin/$(EXEC)
