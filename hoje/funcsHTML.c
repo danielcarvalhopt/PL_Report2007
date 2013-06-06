@@ -380,10 +380,9 @@ void printREPORT(FILE* f){
     footnotes=0;
     out = f;
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
-    fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
+    fprintf(out, "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n<link href=\"./css/default.css\" rel=\"stylesheet\" type=\"text/css\">\n<link href=\"./css/W3C-REC.css\" rel=\"stylesheet\" type=\"text/css\">\n<style type=\"text/css\"></style><script type=\"text/javascript\" src=\"chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js\"></script><title>%s</title></head><body>",r.frontmatter.title);
     printFRONTMATTER();
     printBODY();
     printBACKMATTER();
     fprintf(out,"</body></html>");
 }
-
