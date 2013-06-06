@@ -1,10 +1,10 @@
 BREPORT
 	BFM
 		BTITLE
-			Um relatório em HTML
+			Um relatório em HTML 
 		ETITLE
 		BSUBTITLE
-			Vamos aprender HTML
+			Vamos aprender HTML 
 		ESUBTITLE
 	BAUTHOR
 		BNAME
@@ -164,11 +164,17 @@ mais items numa lista
 				ECELL
 			EROW
 		ETABLE
+		BCAPTION
+				Uma tabela de exemplo
+		ECAPTION
 		ECHAP
 	EBODY
 	BBM
 		BPARA
-			Exemplo de cenas
+			Exemplo ddssdvdse cenas
+			BBOLD
+				dsfafassdf
+			EBOLD
 		EPARA
 		BPARA
 			çukgfykhfçfk

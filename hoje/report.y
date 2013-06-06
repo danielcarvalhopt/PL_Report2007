@@ -224,7 +224,7 @@ Elem: Paragraph {e.id = PARAGRAPH; e.e.paragraph=p; p.prg_elem = g_array_new(FAL
     | Figure {e.id = FIGURE; e.e.fig = fig;}
     | Table {e.id = TABLE;}; 
 
-Table: BEGIN_TABLE TRowList END_TABLE {e.e.table= table; table.rows = g_array_new(FALSE,FALSE,sizeof(Row));};
+Table: BEGIN_TABLE TRowList END_TABLE TCaption {e.e.table= table; table.rows = g_array_new(FALSE,FALSE,sizeof(Row));};
 
 
 TRowList: TRowList BEGIN_ROW TRow END_ROW  {g_array_append_val(table.rows, row); row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));}
@@ -234,12 +234,14 @@ TRowList: TRowList BEGIN_ROW TRow END_ROW  {g_array_append_val(table.rows, row);
 TRow: BEGIN_CELL text END_CELL { cell.text= strdup($2); g_array_append_val(row.cells, cell); }
     | TRow BEGIN_CELL text END_CELL{ cell.text= strdup($3); g_array_append_val(row.cells, cell); };
 
+TCaption: BEGIN_CAPTION text END_CAPTION {table.caption= strdup($2);};
 Summary: BEGIN_SUMMARY text END_SUMMARY {e.e.summary = strdup($2);};
 
 Codeblock: BEGIN_CODEBLOCK text END_CODEBLOCK {e.e.codeblock = strdup($2);};
 
 List: text {g_array_append_val(list.items, $1); }
     | List text {g_array_append_val(list.items, $2); };
+
 text: TEXT {$$=$1;};
 
 Figure:  BEGIN_FIG Graphic FCaption END_FIG
@@ -265,7 +267,7 @@ int main(int argc, char *argv[]){
     	yyparse();
         if(argc > 2) {
             if(strcmp(argv[2],"-l")==0){
-                printReportLatex(yyout);
+                //printReportLatex(yyout);
             }
             else if(strcmp(argv[2],"-hl")==0){
                 printREPORT(yyout);

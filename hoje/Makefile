@@ -1,6 +1,6 @@
 NAME = report
 generatedFiles = lex.yy.c y.tab.c y.tab.h
-sourceFiles = funcs.c report.h
+sourceFiles = funcs.c funcsHTML.c report.h 
 EXEC = report2007
 T=9
 

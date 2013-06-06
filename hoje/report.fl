@@ -99,7 +99,7 @@ newline      "\n"
 
 %%
 
-[ \t\n]+  ;
+[\n\t ]+				{;}
 
 <keywords>{
 	[ \t\n]+  		{;}
@@ -125,11 +125,11 @@ newline      "\n"
 
 <codeblock>{
 	{end_codeblock}		{BEGIN(INITIAL); return END_CODEBLOCK;}	
-	[ \t\n]+  					;
+	[ \t\n]+  					{;}
 	.+					{yylval.str= yytext; return TEXT;}
 	}
 
-{begin_report}	{return BEGIN_REPORT;}
+{begin_report}		{return BEGIN_REPORT;}
 {end_report}	  	{return END_REPORT;}
 {begin_frontmatter} {return BEGIN_FM;}
 {end_frontmatter}	{return END_FM;}
@@ -205,6 +205,6 @@ newline      "\n"
 {end_inlineCode}	{return END_INLINECODE;}
 {begin_acronym}		{return BEGIN_ACRONYM;}
 {end_acronym}		{return END_ACRONYM;}
-[^\n \t].*	  		{yylval.str = strdup(yytext); return(TEXT);}
+.*	  				{yylval.str = strdup(yytext); return(TEXT);}
 
 %%
