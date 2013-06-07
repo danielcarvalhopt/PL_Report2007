@@ -1,10 +1,10 @@
 BREPORT
 	BFM
 		BTITLE
-			Um relatório em HTML
+			Report 2007
 		ETITLE
 		BSUBTITLE
-			Vamos aprender HTML
+			Vamos escrever relatórios
 		ESUBTITLE
 	BAUTHOR
 		BNAME
@@ -14,18 +14,29 @@ BREPORT
 		61056
 		ENUMBER
 		BMAIL
-		smcp92@gmail.com
+		a61056@alunos.uminho.pt
 		EMAIL
 	EAUTHOR
 	BAUTHOR
 		BNAME
-		asda Pinto
+		Daniel Araújo
 		ENAME
 		BNUMBER
-		54654
+		61058
 		ENUMBER
 		BMAIL
-		asda@gmail.com
+		a61058@alunos.uminho.pt
+		EMAIL
+	EAUTHOR
+	BAUTHOR
+		BNAME
+		Daniel Carvalho
+		ENAME
+		BNUMBER
+		61008
+		ENUMBER
+		BMAIL
+		a61008@alunos.uminho.pt
 		EMAIL
 	EAUTHOR
 			TODAY
@@ -42,25 +53,19 @@ BREPORT
 		:KEYWORDS
 	BABS
 		BPARA
-			çoqwbfçoqefjk
-			BBOLD
-				dsasdfassfd
-			EBOLD
-			çoqwbfçoqefjk
-		EPARA
-		BPARA
-			çkgjçkgçkug
-		EPARA
-		BPARA
-			çkvcukfxhfkxfkx
+		Este relatório descreve o processo de desenvolvimento e o resultado obtido, como consequência da resolução do enunciado do trabalho prático número dois da Unidade Curricular Processamento de Linguagens. O enunciado aqui resolvido é sobre o "Report 2007: vamos escrever relatórios". Este documento trata de analisar e explicar os objectivos deste segundo trabalho. Assim, falaremos das decisões tomadas, os principais obstáculos encontrados e os resultados obtidos. Para além dos conhecimentos que já eram necessários para o primeiro projecto, foi necessário demonstrar conhecimentos sobre ferramentas
+		BITALIC
+			Flex e Yacc
+		EITALIC
+		, conhecimentos estes que se mostraram muito úteis e interessantes.
 		EPARA
 	EABS
 	BAKN
 		BPARA
-			lyfluyfjy
+			Agradecer a Deus por tudo.
 		EPARA
 		BPARA
-			çukgfykhfçfk
+			Agredecer pela oportunidade.
 		EPARA
 	EAKN
 	INDEX
@@ -68,7 +73,7 @@ BREPORT
 	BBODY
 		BCHAP
 			BTITLE
-				Um capítulo para testar
+				Introdução
 			ETITLE
 		BPARA
 			lyfluyfjy
@@ -79,7 +84,7 @@ BREPORT
 		ECHAP
 		BCHAP
 			BTITLE
-				Mais capítulo para testar
+				Descrição das ferramentas utililizadas
 			ETITLE
 		BPARA
 			lyfluyfjy
@@ -88,7 +93,7 @@ BREPORT
 			dsfdf
 		ESUMMARY
 		BCODEBLOCK{
-			BCODEBLOCK dsfdf kjnkjn safadsfds sadf dsa DsfddsfdsDS FEWWQRWG RQEGRE ECODEBLOCK
+dsfdf
 		}
 		BLIST
 items numa lista
@@ -102,7 +107,7 @@ mais items numa lista
 		ECHAP
 		BCHAP
 			BTITLE
-				Um último para testar
+				Descrição da Linguagem desenvolvida
 			ETITLE
 		BPARA
 			lyfluyfjy
@@ -164,9 +169,9 @@ mais items numa lista
 				ECELL
 			EROW
 		ETABLE
-		BCAPTION
-			Cenas Modernas
-		ECAPTION
+			BCAPTION
+				Legenda
+			ECAPTION
 		ECHAP
 	EBODY
 	BBM
@@ -177,5 +182,5 @@ mais items numa lista
 			çukgfykhfçfk
 		EPARA
 	EBM
-
 EREPORT
+

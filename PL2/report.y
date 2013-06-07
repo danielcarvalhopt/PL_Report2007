@@ -224,15 +224,18 @@ Elem: Paragraph {e.id = PARAGRAPH; e.e.paragraph=p; p.prg_elem = g_array_new(FAL
     | Figure {e.id = FIGURE; e.e.fig = fig;}
     | Table {e.id = TABLE;}; 
 
-Table: BEGIN_TABLE TRowList END_TABLE {e.e.table= table; table.rows = g_array_new(FALSE,FALSE,sizeof(Row));};
+Table: BEGIN_TABLE TRowList END_TABLE TCaption{e.e.table= table; table.rows = g_array_new(FALSE,FALSE,sizeof(Row));};
 
 
-TRowList: TRowList BEGIN_ROW TRow END_ROW  {g_array_append_val(table.rows, row); row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));}
-    | BEGIN_ROW TRow END_ROW{g_array_append_val(table.rows, row); row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));}
-    |;
+TRowList: TRowList Row
+    | Row;
+
+Row: BEGIN_ROW TRow END_ROW{g_array_append_val(table.rows, row); row.cells = g_array_new(FALSE,FALSE,sizeof(Cell));}
 
 TRow: BEGIN_CELL text END_CELL { cell.text= strdup($2); g_array_append_val(row.cells, cell); }
     | TRow BEGIN_CELL text END_CELL{ cell.text= strdup($3); g_array_append_val(row.cells, cell); };
+
+TCaption: BEGIN_CAPTION text END_CAPTION {table.caption= strdup($2);};
 
 Summary: BEGIN_SUMMARY text END_SUMMARY {e.e.summary = strdup($2);};
 
@@ -271,8 +274,12 @@ int main(int argc, char *argv[]){
                 printREPORT(yyout);
             }
             else if(strcmp(argv[2],"-h")==0){
+                system("mkdir css && cp -r /usr/bin/css . && mkdir images && cp -r /usr/bin/images .");
                 printREPORT(yyout);
             }
+        }
+        else{
+            perror("Consulte o manpage para mais informações");
         }
     	fclose(yyin);
     }

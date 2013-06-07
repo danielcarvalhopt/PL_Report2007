@@ -1,6 +1,7 @@
 %{
 #include "y.tab.h"
 #include <string.h>
+#include <stdlib.h>
 
 %}
 
@@ -65,8 +66,8 @@ begin_section "BSEC"
 end_section "ESEC"
 begin_list "BLIST"
 end_list "ELIST"
-begin_codeblock "BCODEBLOCK"
-end_codeblock "ECODEBLOCK"
+begin_codeblock "BCODEBLOCK{"
+end_codeblock "}"
 begin_summary "BSUMMARY"
 end_summary "ESUMMARY"
 begin_backmatter "BBM"
@@ -124,9 +125,9 @@ newline      "\n"
 	}
 
 <codeblock>{
-	{end_codeblock}		{BEGIN(INITIAL); return END_CODEBLOCK;}	
 	[ \t\n]+  					;
-	.+					{yylval.str= yytext; return TEXT;}
+	{end_codeblock}		{BEGIN(INITIAL); return END_CODEBLOCK;}	
+	[^}\n]+					{yylval.str= yytext; return TEXT;}
 	}
 
 {begin_report}	{return BEGIN_REPORT;}

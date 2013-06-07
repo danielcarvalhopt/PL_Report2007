@@ -15,7 +15,7 @@ void printAUTORES() {
 	int i;
 	
 	fprintf(out,"<h3><u>Authors:</u></h3>");
-    fprintf(out,"<table border=\"2\"><tr><td><b>Name</b></td><td><b>Number</b></td><td><b>Email</b></td></tr>");
+    fprintf(out,"<table border=\"2\" class=\"selectorsReview\"><thead><tr><th>Name</th><th>Number</th><th>Email</th></tr><thead><tbody>");
     for (i = 0; i <r.frontmatter.authors->len ; i++) {
     	a = &g_array_index(r.frontmatter.authors,Author,i);
     	fprintf(out,"<tr>");
@@ -24,7 +24,7 @@ void printAUTORES() {
     	fprintf(out,"<td>%s</td>",a->mail);
     	fprintf(out,"</tr>");
 	}
-    fprintf(out,"</table>");
+    fprintf(out,"</tbody></table>");
 }   
 
 void printDATE() {
@@ -47,6 +47,7 @@ fprintf(out,"</script>\n");
 }
 
 void printABSTRACT() {
+    fprintf(out,"<div>");
     fprintf(out,"<hr>");
     fprintf(out,"<h1>Abstract</h1>");
     int i;
@@ -55,6 +56,7 @@ void printABSTRACT() {
         p = &g_array_index(r.frontmatter.abstract.paragraphs,Paragraph,i);
         printPARAGRAPH(*p);
     }
+    fprintf(out, "</div>" );
 }
 
 void printAKNOW() {
@@ -103,8 +105,8 @@ void printCHAPTER(Chapter c){
     }
 }
 void printFRONTMATTER() {
-    fprintf(out,"<hr><h3><u>Title: </u>%s</h3>",r.frontmatter.title);
-    fprintf(out,"<h3><u>Subtitle: </u>%s</h3>",r.frontmatter.subtitle);
+    fprintf(out,"<hr><h1>%s</h1>",r.frontmatter.title);
+    fprintf(out,"<h2>%s</h2>",r.frontmatter.subtitle);
     printAUTORES();
     fprintf(out,"<h3><u>Date: </u></h3>");
     if (r.frontmatter.date == NULL) 
@@ -113,25 +115,26 @@ void printFRONTMATTER() {
         {
             fprintf(out,"%s",r.frontmatter.date);
         }
-    fprintf(out,"<hr><h3><u>Institution:</u> %s</h3>",r.frontmatter.institution);
+    fprintf(out,"<h3><u>Institution:</u> %s</h3>",r.frontmatter.institution);
     int i;
     char** s;
+    fprintf(out,"<div style=\"text-align:center;\">");
     for (i = 0; i < r.frontmatter.keywords->len; i++) {
     s = &g_array_index(r.frontmatter.keywords,char*,i);
         fprintf(out,"- %s -",*s);
     }
-    fprintf(out,"<hr><hr>");
+    fprintf(out,"</div>");
     printABSTRACT();
     printAKNOW();
     printINDEX();
     printINDEXFIG();
     printINDEXTAB();
-    fprintf(out,"<hr><hr>");
 }
 
 void printPARAGRAPH(Paragraph p) {
     Paragraph_Elem* ph;
     int i;
+    fprintf(out,"<p>");
     for (i = 0; i <p.prg_elem->len ; i++) {
     ph = &g_array_index(p.prg_elem,Paragraph_Elem,i);
     switch(ph->id){
@@ -171,21 +174,24 @@ void printPARAGRAPH(Paragraph p) {
         break;
         }
     }
+    fprintf(out,"</p>");
 }
 
 void printFIGURE(Figure f){
+    fprintf(out, "<div style=\"text-align:center;\">");
     fprintf(out,"<figure><img src=\"%s\" name=\"%s\" width=\"%f\" height=\"%f\"><figcaption>%s</figcaption></figure>",f.path,f.caption,f.size,f.size,f.caption);
+    fprintf(out, "</div>");
 }
 
 void printTABLE(Table t){
-    fprintf(out,"<table border=2>");
-    //fprintf(out,"<caption><a name=\"%s\">%s</a></caption>",t.caption,t.caption);
+    fprintf(out,"<table border=2 class=\"selectorsReview\" style=\"margin-left:auto; margin-right:auto; padding-top:25px;padding-bottom:25px;\">");
     int i;
     Row* r;
     for (i = 0; i <t.rows->len ; i++) {
     r = &g_array_index(t.rows,Row,i);
     printROW(*r);
     }
+    fprintf(out,"<caption><a name=\"%s\">%s</a></caption>",t.caption,t.caption);
     fprintf(out,"</table>");
 }
 
@@ -246,7 +252,7 @@ void printLIST(List list){
 }
 
 void printCODEBLOCK(char* t){
-    fprintf(out,"<code>%s</code>",t);
+    fprintf(out,"<div class=\"example\"><p><pre>%s</pre></p></div>",t);
 }
 
 void printSUMMARY(char* t){
@@ -254,7 +260,7 @@ void printSUMMARY(char* t){
 }
 
 void printTEXTO(char* t){
-    fprintf(out, "<p>%s</p>",t);
+    fprintf(out, " %s ",t);
 }
 
 void printFOOTNOTE(Footnote fn){
@@ -378,7 +384,8 @@ void printREPORT(FILE* f){
     footnotes=0;
     out = f;
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
-    fprintf(out, "<head><title>%s</title></head><body>",r.frontmatter.title);
+    fprintf(out, "<title>%s</title><link href=\"./css/default.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"./css/W3C-REC.css\" rel=\"stylesheet\" type=\"text/css\"> <style type=\"text/css\"></style><script type=\"text/javascript\" src=\"chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js\"></script></head><body>",r.frontmatter.title);
+    fprintf(out,"<p><img alt=\"W3C\" height=\"48\" src=\"./images/icon.png\" width=\"72\">");
     printFRONTMATTER();
     printBODY();
     printBACKMATTER();
