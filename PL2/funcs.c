@@ -129,6 +129,7 @@ void printFRONTMATTER() {
     printINDEX();
     printINDEXFIG();
     printINDEXTAB();
+    fprintf(out,"<hr>");
 }
 
 void printPARAGRAPH(Paragraph p) {
@@ -179,7 +180,7 @@ void printPARAGRAPH(Paragraph p) {
 
 void printFIGURE(Figure f){
     fprintf(out, "<div style=\"text-align:center;\">");
-    fprintf(out,"<figure><img src=\"%s\" name=\"%s\"><figcaption>%s</figcaption></figure>",f.path,f.caption,f.caption);
+    fprintf(out,"<figure><img src=\"%s\"><figcaption><a name=\"%s\">%s</a></figcaption></figure>",f.path,f.caption,f.caption);
     fprintf(out, "</div>");
 }
 
@@ -271,7 +272,7 @@ void printFOOTNOTE(Footnote fn){
 }
 
 void printREF(Ref r){
-    fprintf(out,"<a href=http://\"%s\">%s</a>",r.text,r.text);
+    fprintf(out,"<a href=http://%s>%s</a>",r.text,r.text);
 }
 
 void printXREF(Xref xr){
@@ -317,6 +318,7 @@ void printBODY(){
 
 void printBACKMATTER(){
     fprintf(out,"<hr>");
+    fprintf(out,"<hr>");
     fprintf(out,"<h2>Epilogue</h2>");
     int i;
     Paragraph *p;
@@ -324,6 +326,7 @@ void printBACKMATTER(){
         p = &g_array_index(r.backMatter.paragraphs,Paragraph,i);
         printPARAGRAPH(*p);
     }
+
 
 }
 
@@ -350,9 +353,11 @@ void printINDEXFIG() {
 
         for (i = 0; i <r.body.chapters->len; i++) {
             c = &g_array_index(r.body.chapters,Chapter,i);    
-                for (i = 0; i <c->elems->len ; i++) {
-                    elem = &g_array_index(c->elems,Elem,i);
+                for (j = 0; j <c->elems->len ; j++) {
+                    elem = &g_array_index(c->elems,Elem,j);
+                    if(elem->id == FIGURE){
                     fprintf(out,"<p><a href=\"#%s\">%s<a/></p>",elem->e.fig.caption,elem->e.fig.caption);     
+                    }
                 }
 
         }   
@@ -370,9 +375,11 @@ void printINDEXTAB() {
 
         for (i = 0; i <r.body.chapters->len; i++) {
             c = &g_array_index(r.body.chapters,Chapter,i);    
-                for (i = 0; i <c->elems->len ; i++) {
-                    elem = &g_array_index(c->elems,Elem,i);
+                for (j = 0; j <c->elems->len ; j++) {
+                    elem = &g_array_index(c->elems,Elem,j);
+                    if(elem->id == TABLE){
                     fprintf(out,"<p><a href=\"#%s\">%s<a/></p>",elem->e.fig.caption,elem->e.fig.caption);     
+                    }
                 }
 
         }   
@@ -393,7 +400,15 @@ void printREPORT(FILE* f){
 }
 
 void printReportLatex(FILE* f){
-
+    footnotes=0;
+    out = f;
+    fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+    fprintf(out, "<title>%s</title><link href=\"./css/default.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"./css/W3C-REC.css\" rel=\"stylesheet\" type=\"text/css\"> <style type=\"text/css\"></style><script type=\"text/javascript\" src=\"chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js\"></script></head><body>",r.frontmatter.title);
+    //fprintf(out,"<p><img style=\"text-align:center;\" alt=\"W3C\" height=\"48\" src=\"./images/icon.png\" width=\"72\">");
+    printFRONTMATTER();
+    printBODY();
+    printBACKMATTER();
+    fprintf(out,"</body></html>");
 
 
 }

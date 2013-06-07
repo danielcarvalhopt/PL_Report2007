@@ -221,7 +221,7 @@ Elem: Paragraph {e.id = PARAGRAPH; e.e.paragraph=p; p.prg_elem = g_array_new(FAL
     | Summary {e.id = SUMMARY;}
     | Codeblock {e.id = CODEBLOCK;}
     | BEGIN_LIST List END_LIST  {e.id = LIST; e.e.list.items = list.items; list.items = g_array_new(FALSE,FALSE,sizeof(char*));}
-    | Figure {e.id = FIGURE; e.e.fig = fig;}
+    | Figure {e.id = FIGURE; e.e.fig = fig; e.e.fig.caption = fig.caption;}
     | Table {e.id = TABLE;}; 
 
 Table: BEGIN_TABLE TRowList END_TABLE TCaption{e.e.table= table; table.rows = g_array_new(FALSE,FALSE,sizeof(Row));};
@@ -263,17 +263,15 @@ int main(int argc, char *argv[]){
     table.rows = g_array_new(FALSE,FALSE,sizeof(Row));
     if(argc > 1) {
     	yyin = fopen(argv[1],"r");
-    	yyout = fopen("report.html","w+");
         initReport();
     	yyparse();
         if(argc > 2) {
             if(strcmp(argv[2],"-l")==0){
+                yyout = fopen("report.tex","w+");
                 printReportLatex(yyout);
             }
-            else if(strcmp(argv[2],"-hl")==0){
-                printREPORT(yyout);
-            }
             else if(strcmp(argv[2],"-h")==0){
+                yyout = fopen("report.html","w+");
                 system("mkdir css && cp -r /usr/bin/css . && mkdir images && cp -r /usr/bin/images .");
                 printREPORT(yyout);
             }
