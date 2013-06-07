@@ -135,7 +135,7 @@ extern int yylineno;
 
 %%
 
-Report: BEGIN_REPORT FrontMatter Body BackMatter END_REPORT ;
+Report: BEGIN_REPORT FrontMatter Body BackMatter END_REPORT | BEGIN_REPORT END_REPORT;
 
 FrontMatter: BEGIN_FM Title Subtitle Authors Date Institution Keywords Abstract Aknow Toc Lof Lot END_FM  { r.frontmatter.title = strdup($2); };;
 
