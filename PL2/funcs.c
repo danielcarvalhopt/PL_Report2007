@@ -402,13 +402,63 @@ void printREPORT(FILE* f){
 void printReportLatex(FILE* f){
     footnotes=0;
     out = f;
-    fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
-    fprintf(out, "<title>%s</title><link href=\"./css/default.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"./css/W3C-REC.css\" rel=\"stylesheet\" type=\"text/css\"> <style type=\"text/css\"></style><script type=\"text/javascript\" src=\"chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js\"></script></head><body>",r.frontmatter.title);
-    //fprintf(out,"<p><img style=\"text-align:center;\" alt=\"W3C\" height=\"48\" src=\"./images/icon.png\" width=\"72\">");
-    printFRONTMATTER();
-    printBODY();
-    printBACKMATTER();
-    fprintf(out,"</body></html>");
+    int i;
+    Author *a;
+fprintf(out, "\\documentclass[12pt]{article}");
+fprintf(out, "\\usepackage{a4wide}");
+fprintf(out, "\\usepackage[portuges]{babel}");
+fprintf(out, "\\usepackage[utf8]{inputenc}");
+fprintf(out, "\\usepackage{hyperref}");
+fprintf(out, "\\usepackage{graphicx}");
+fprintf(out, "\\usepackage{enumerate}");
+fprintf(out, "\\usepackage{multirow}");
+fprintf(out, "\\usepackage{multicol}");
+fprintf(out, "\\begin{document}");
+fprintf(out, "\\begin{titlepage}");
+fprintf(out, "\\newcommand{\\\\HRule}{\\\\rule{\\\\linewidth}{0.5mm}}");
+fprintf(out, "\\center");
+fprintf(out, "\\textsc{\\\\LARGE %s}\\\\[1.5cm]", r.frontmatter.institution);
+fprintf(out, "\\textsc{\\\\LARGE %s}\\\\[1.5cm]", r.frontmatter.title);
+fprintf(out, "\\textsc{\\\\large %s}\\\\[0.5cm]", r.frontmatter.subtitle);
+fprintf(out, "\\HRule \\\\[0.4cm]");
+fprintf(out, "{ \\huge \bfseries Report 2007}\\\\[0.4cm]");
+fprintf(out, "\\HRule \\[1.5cm]");
+fprintf(out, "\begin{minipage}{0.4\\textwidth}");
+fprintf(out, "\\begin{flushleft} \\\\large");
+fprintf(out, "\\emph{Realizado por:}\\\\");
+for(i=0; i < r.frontmatter.authors->len; i++){
+    a=&g_array_index(r.frontmatter.authors, Author, i);
+    fprintf(out, "%s \\textsc{%s} %s\\\\", a->name, a->number, a->mail);
+}
+fprintf(out, "\\end{flushleft}");
+fprintf(out, "\\end{minipage}");
+fprintf(out, "\\begin{minipage}{0.4\\textwidth}");
+fprintf(out, "\\begin{flushright} \\\\large");
+fprintf(out, "\\end{flushright}");
+fprintf(out, "\\end{minipage}\\\\[4cm]");
+if(r.frontmatter.date == NULL){
+fprintf(out, "{\\large \\today}\\\\[3cm]");
+}
+fprintf(out, "\\includegraphics{UM}\\[5cm]");
+fprintf(out, "\\vfill");
+fprintf(out, "\\end{titlepage}");
+fprintf(out, "\\newpage");
+fprintf(out, "\\begin{abstract}");
+    Paragraph *p;
+    for (i = 0; i <r.frontmatter.abstract.paragraphs->len ; i++) {
+        p = &g_array_index(r.frontmatter.abstract.paragraphs,Paragraph,i);
+        printPARAGRAPH(*p);
+    }
+fprintf(out, "\\end{abstract}");
+fprintf(out, "\\newpage");
+if(r.frontmatter.index){
+fprintf(out, "\\tableofcontents");
+}
+
+
+
+fprintf(out, "\\end{document}");
+
 
 
 }
