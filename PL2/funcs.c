@@ -179,7 +179,7 @@ void printPARAGRAPH(Paragraph p) {
 
 void printFIGURE(Figure f){
     fprintf(out, "<div style=\"text-align:center;\">");
-    fprintf(out,"<figure><img src=\"%s\" name=\"%s\" width=\"%f\" height=\"%f\"><figcaption>%s</figcaption></figure>",f.path,f.caption,f.size,f.size,f.caption);
+    fprintf(out,"<figure><img src=\"%s\" name=\"%s\"><figcaption>%s</figcaption></figure>",f.path,f.caption,f.caption);
     fprintf(out, "</div>");
 }
 
@@ -271,7 +271,7 @@ void printFOOTNOTE(Footnote fn){
 }
 
 void printREF(Ref r){
-    fprintf(out,"<a href=\"%s\">%s</a>",r.text,r.text);
+    fprintf(out,"<a href=http://\"%s\">%s</a>",r.text,r.text);
 }
 
 void printXREF(Xref xr){
@@ -385,7 +385,7 @@ void printREPORT(FILE* f){
     out = f;
     fprintf(out,"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
     fprintf(out, "<title>%s</title><link href=\"./css/default.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"./css/W3C-REC.css\" rel=\"stylesheet\" type=\"text/css\"> <style type=\"text/css\"></style><script type=\"text/javascript\" src=\"chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js\"></script></head><body>",r.frontmatter.title);
-    fprintf(out,"<p><img alt=\"W3C\" height=\"48\" src=\"./images/icon.png\" width=\"72\">");
+    //fprintf(out,"<p><img style=\"text-align:center;\" alt=\"W3C\" height=\"48\" src=\"./images/icon.png\" width=\"72\">");
     printFRONTMATTER();
     printBODY();
     printBACKMATTER();
