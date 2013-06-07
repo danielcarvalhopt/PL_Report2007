@@ -1,0 +1,303 @@
+BREPORT
+	BFM
+		BTITLE
+			Report 2007
+		ETITLE
+		BSUBTITLE
+			Vamos escrever relatórios
+		ESUBTITLE
+	BAUTHOR
+		BNAME
+		Serafim Pinto
+		ENAME
+		BNUMBER
+		61056
+		ENUMBER
+		BMAIL
+		a61056@alunos.uminho.pt
+		EMAIL
+	EAUTHOR
+	BAUTHOR
+		BNAME
+		Daniel Araújo
+		ENAME
+		BNUMBER
+		61058
+		ENUMBER
+		BMAIL
+		a61058@alunos.uminho.pt
+		EMAIL
+	EAUTHOR
+	BAUTHOR
+		BNAME
+		Daniel Carvalho
+		ENAME
+		BNUMBER
+		61008
+		ENUMBER
+		BMAIL
+		a61008@alunos.uminho.pt
+		EMAIL
+	EAUTHOR
+			TODAY
+	BINST
+		Universidade do Minho
+	EINST
+		KEYWORDS
+			yacc
+			flex
+			PL
+			LEI
+			Engenharia
+			Informatica
+		:KEYWORDS
+	BABS
+		BPARA
+		Este relatório descreve o processo de desenvolvimento e o resultado obtido, como consequência da resolução do enunciado do trabalho prático número dois da Unidade Curricular Processamento de Linguagens. O enunciado aqui resolvido é sobre o "Report 2007: vamos escrever relatórios". Este documento trata de analisar e explicar os objectivos deste segundo trabalho. Assim, falaremos das decisões tomadas, os principais obstáculos encontrados e os resultados obtidos. Para além dos conhecimentos que já eram necessários para o primeiro projecto, foi necessário demonstrar conhecimentos sobre ferramentas
+		BITALIC
+			Flex e Yacc
+		EITALIC
+		, conhecimentos estes que se mostraram muito úteis e interessantes.
+		EPARA
+	EABS
+	BAKN
+		BPARA
+			Agradecer a Deus por tudo.
+		EPARA
+	EAKN
+	INDEX
+	EFM
+	BBODY
+		BCHAP
+			BTITLE
+				Introdução
+			ETITLE
+		BPARA
+			Pretende-se com este segundo trabalho usar o conhecimento adquirido nas aulas teóricas e práticas, sobretudo o uso das ferramentas Flex - 
+			BITALIC 
+			The Fast Lexical Analyzer e Yet Another Compiler Compiler
+			BITALIC
+			que estão na base do desenvolvimento do nosso trabalho.
+		EPARA
+		BPARA
+		Assim sendo, temo como finalidade o desenvolvimento de um compilador que aceitará relatórios escritos numa determinada linguagem e gerará a respectiva versão HTML e gerar também uma versão em \LaTeX.
+		EPARA
+		BPARA
+		À primeira vista, este trabalho pareceu-nos bastante interessante uma vez que, teremos que desenvolver um compilador que gera outra linguagem e estudar o seu funcionamento, e de todos os elementos do grupo esta é a primeira vez que qualquer um de nós fez algo parecido. Para além disto, as ferramentas que devemos utilizar (
+		BITALIC
+		Flex e Yacc
+		ETALIC
+		) parecem-nos bastantes poderosas e com muitas potencialidades e não temos dúvidas que o facto de as sabermos usar se irá revelar muito benéfico.
+		EPARA
+		ECHAP
+		BCHAP
+			BTITLE
+				Descrição das ferramentas utililizadas
+			ETITLE
+		BPARA
+			Para o desenvolvimento deste projecto necessitamos de utilizar ferramentas diferentes, sendo elas o
+			BBOLD
+			Flex, o Yacc
+			EBOLD
+			, a linguagem C e a biblioteca glib.
+		EPARA
+		BPARA
+		Assim, os dois primeiros componentes, como já foi referido, tratam-se de um analisador léxico e de um analisador sintáctico, respectivamente. Estes dois são utilizados, maioritariamente, em conjunto, isto é, o Yacc usa uma gramática formal de modo a analisar sintacticamente cada entrada enquanto que o Flex consegue fazer a distinção das expressões regulares. Estas expressões regulares distinguidas pelo Flex são reconhecidos como tokens pelo Yacc. O GCC, popular compilador da linguagem de programação C, é utilizado de modo a combinar o analisador léxico com o analisador sintáctico. A biblioteca glib do C, foi usada nas nossas estruturas de dados como se poderá ver mais adiante.
+		EPARA
+		BPARA
+		Falta fazer uma pequena referência ao uso de LaTeX e HTML que foram gerados pelo compilador, com o objectivo de poder obter um relatório escrito nestas duas linguagens.
+		EPARA
+		ECHAP
+		BCHAP
+			BTITLE
+				Descrição da Linguagem desenvolvida
+			ETITLE
+		BPARA
+			A nossa linguagem é baseada no esboço dado no enunciado, apenas com algumas coisas adicionais sugeridas pelo professor.
+		EPARA
+		BFIG
+			BGRAPH
+				report.png
+			EGRAPH
+			BCAPTION
+			Report
+			ECAPTION
+		EFIG
+		BPARA
+			O nosso relatório estará dividido em três partes. No que diz respeito ao 
+			BBOLD
+			FrontMatter
+			EBOLD 
+			acrescentamos todos os não-terminais propostos no enunciado: Subtitle, Institution, Keywords, Aknowledgements, Table of contents, Table of figures e Table of tables.
+		EPARA
+		BFIG
+			BGRAPH
+				frontmatter.png
+			EGRAPH
+			BCAPTION
+			Frontmatter
+			ECAPTION
+		EFIG
+		BLIST
+		Subtitle - Apenas texto normal.
+    	Institution - Apenas texto normal.
+    	Keywords - Uma lista de palavras-chave do documento
+   	 	Aknowledgements - Uma lista de parágrafos tal como o Abstract.
+    	Table of contents - É um inteiro que indica se o relatório conterá os índices respectivos.
+		ELIST
+		BPARA
+		Por exemplo, cada vez que quisermos adicionar um autor ao nosso relatório, basta escrever BAUTHOR. 	E de seguida adicionar os campos acima definidos na estrutura. Na nossa linguagem apenas é obrigatório sempre que se inicia o BAUHTOR, adicionar o nome(BNAME João ENAME). A seguir, a parte principal do relatório que conterá o nosso Body:
+		EPARA
+		BFIG
+			BGRAPH
+				body.png
+			EGRAPH
+			BCAPTION
+			Body
+			ECAPTION
+		EFIG
+		BPARA
+		O Body será constituído por uma lista de Chapters, e estes terão um Title e uma ElemList. Estes elementos aqui presentes como podemos ver na imagem, podem ser várias coisas: uma imagem, uma tabela, uma section, etc.
+		Um parágrafo é uma lista de vários elementos, desde o texto até palavras em itálico ou negrito por exemplo. Para começar um parágrafo basta escrever "BPARA" e lá dentro inserir qualquer um dos elementos apresentados acima, iniciados respectivamente pela etiqueta. Outro tipo de elementos dentro do body podem ser as figuras e tabelas que serão iniciadas como BFIGURE, e BTABLE. 
+		EPARA
+		BPARA
+		Resumindo, o nossa linguagem é o esboço feito pelo professor, com mais algumas modificações que a tornam mais completa. De certo modo achamos que o que estava no enunciado era suficiente para tornar um relatório completo e usável. A nosso ver, não havia nada a faltar para acrescentar melhorias na linguagem.
+		EPARA
+		BTABLE
+			BROW
+				BCELL
+					Dados
+				ECELL
+				BCELL
+					Mais dados
+				ECELL
+				BCELL
+					Teste
+				ECELL
+			EROW
+			BROW
+				BCELL
+					MAis dados
+				ECELL					
+				BCELL
+					TESTE
+				ECELL
+				BCELL
+					TESTE2
+				ECELL
+			EROW
+			BROW
+				BCELL
+					AInda mais dados
+				ECELL
+				BCELL
+					para variar
+				ECELL
+				BCELL
+					ok
+				ECELL
+			EROW
+			BROW
+				BCELL
+					amostra
+				ECELL
+				BCELL
+					amostra2
+				ECELL
+				BCELL
+					amostra4
+				ECELL
+			EROW
+		ETABLE
+			BCAPTION
+				Legenda
+			ECAPTION
+		ECHAP
+		BCHAP
+			BTITLE
+				Especificação do FLEX
+			ETITLE
+			BPARA
+			Quanto ao prodecimento a desenvolver para tratar da análise lexical, achámos necessário definir quatro estados como fizemos anteriormente no primeiro trabalho prático:
+			EPARA
+			BFIG
+			BGRAPH
+				keywords.png
+			EGRAPH
+			BCAPTION
+			Keywords
+			ECAPTION
+		EFIGBFIG
+			BGRAPH
+				table.png
+			EGRAPH
+			BCAPTION
+			Table
+			ECAPTION
+		EFIGBFIG
+			BGRAPH
+				list.png
+			EGRAPH
+			BCAPTION
+			List
+			ECAPTION
+		EFIGBFIG
+			BGRAPH
+				Codeblock.png
+			EGRAPH
+			BCAPTION
+			Codeblock
+			ECAPTION
+		EFIG
+			BPARA
+			Ao introduzir estes quatro estados no Flex, conseguimos facilitar um pouco o nosso trabalho. No caso do codeblock, interessa-nos ter um estado porque isso nos permite guardar todo o que está dentro das etiquetas respectivas, inclusive outras etiquetas. Dentro do codeblock podemos fazer um BEGIN de outro tipo, sem compremeter o principal objectivo, que é colocar tudo o que está lá em formato de código. Para criar as tabelas, poupa-nos algum trabalho. Depois em relação aos estados list e keywords, que são muito parecidos, usamos estados porque assim basta inserir cada elemento da lista por linha sem precisar de usar algum tipo de separador, o que torna a nossa linguagem mai prática. Além de estados, o restante \textit{Flex} é bastante simples e intuitivo pois são apenas as etiquetas que nós definimos para a nossa linguagem. Como por exemplo, este exerto inicial:
+			EPARA
+			BCODEBLOCK{
+			begin_report "BREPORT"
+			}
+			BCODEBLOCK{
+			{begin_report}    {return BEGIN_REPORT;}
+			}
+	ECHAP
+	BCHAP
+			BTITLE
+				Utilização do YACC
+			ETITLE
+			BPARA
+			Aqui encontrar-se-ão referenciados todos os tokens deinidos na especificação FLEX e estes serão palavras reservadas da nossa própria linguagem. Cada token terá uma tarefa específicaca quanto ao processamento da linguagem em uso uma vez que cada palavra indica um tipo de instrucão diferente.
+			EPARA
+			BPARA
+			Aqui é efetuada uma tradução direta entre os símbolos definidos na gramática apresentada e o código C. É desta forma que guardamos na estrutura de dados todo o conteúdo relevante e que nos permite gerar relatórios tanto em LaTeX como em HTML. Ao utilizar o YACC podemos definir código C a ser exucutado no momento em que cada regra da gramática definida é verificada. 
+			EPARA
+	ECHAP
+	BCHAP
+			BTITLE
+				Estruturas na linguagem C
+			ETITLE
+	ECHAP
+	BCHAP
+			BTITLE
+				Geração de Relatórios - Latex e Html
+			ETITLE
+	ECHAP
+	BCHAP
+			BTITLE
+				Análise de resultados obtidos
+			ETITLE
+	ECHAP
+	BCHAP
+			BTITLE
+				Makefile e Manpage
+			ETITLE
+	ECHAP
+	BCHAP
+			BTITLE
+				Conclusão
+			ETITLE
+	ECHAP
+	EBODY
+	BBM
+EREPORT
+
+
+
